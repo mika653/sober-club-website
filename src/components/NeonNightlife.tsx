@@ -72,6 +72,34 @@ function GlobalStyles() {
       .marquee-track:hover {
         animation-play-state: paused;
       }
+      .neon-text {
+        text-shadow: 0 0 7px rgba(57,255,20,0.6), 0 0 20px rgba(57,255,20,0.35), 0 0 40px rgba(57,255,20,0.15);
+      }
+      .neon-text-orange {
+        text-shadow: 0 0 7px rgba(255,107,0,0.6), 0 0 20px rgba(255,107,0,0.35), 0 0 40px rgba(255,107,0,0.15);
+      }
+      .neon-box {
+        box-shadow: 0 0 8px rgba(57,255,20,0.4), 0 0 20px rgba(57,255,20,0.15), inset 0 0 8px rgba(57,255,20,0.05);
+      }
+      .neon-box-orange {
+        box-shadow: 0 0 8px rgba(255,107,0,0.4), 0 0 20px rgba(255,107,0,0.15);
+      }
+      .neon-box:hover {
+        box-shadow: 0 0 12px rgba(57,255,20,0.6), 0 0 30px rgba(57,255,20,0.25), inset 0 0 12px rgba(57,255,20,0.08);
+      }
+      .neon-border {
+        box-shadow: 0 0 6px rgba(57,255,20,0.3), 0 0 15px rgba(57,255,20,0.1);
+      }
+      .neon-line {
+        box-shadow: 0 0 4px rgba(57,255,20,0.5), 0 0 10px rgba(57,255,20,0.2);
+      }
+      @keyframes neon-pulse {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.85; }
+      }
+      .neon-pulse {
+        animation: neon-pulse 3s ease-in-out infinite;
+      }
     `}</style>
   );
 }
@@ -91,8 +119,8 @@ function Header() {
           aria-label="Sober Club home"
           className="flex items-center gap-2 select-none"
         >
-          <span className="inline-block w-1 h-6 bg-[#39FF14] rounded-full flex-shrink-0" />
-          <span className="font-unbounded text-[17px] tracking-[0.22em] text-white uppercase">
+          <span className="inline-block w-1 h-6 bg-[#39FF14] rounded-full flex-shrink-0 neon-line" />
+          <span className="font-unbounded text-[17px] tracking-[0.22em] text-[#39FF14] uppercase neon-text">
             Sober Club
           </span>
         </a>
@@ -120,7 +148,7 @@ function Header() {
         {/* Book Now pill */}
         <a
           href="#contact"
-          className="inline-flex items-center gap-2 h-10 px-6 rounded-full bg-[#39FF14] text-[#0A0A0A] font-dm font-semibold text-[13px] hover:brightness-110 transition-all duration-200 flex-shrink-0"
+          className="inline-flex items-center gap-2 h-10 px-6 rounded-full bg-[#39FF14] text-[#0A0A0A] font-dm font-semibold text-[13px] hover:brightness-110 transition-all duration-200 flex-shrink-0 neon-box"
         >
           Book Now
           <ChevronRight size={14} strokeWidth={2.5} />
@@ -159,7 +187,7 @@ function Hero() {
       <div className="absolute inset-0 flex flex-col justify-center px-6 sm:px-10 lg:px-16 pt-[72px]">
         <div className="max-w-2xl">
           {/* Pill badge */}
-          <div className="mb-7 inline-flex items-center gap-2.5 rounded-full border border-[#39FF14]/35 bg-[#39FF14]/8 px-4 py-1.5 backdrop-blur-sm">
+          <div className="mb-7 inline-flex items-center gap-2.5 rounded-full border border-[#39FF14]/35 bg-[#39FF14]/8 px-4 py-1.5 backdrop-blur-sm neon-border">
             <span className="inline-block w-1.5 h-1.5 rounded-full bg-[#39FF14] animate-pulse" />
             <span className="font-dm text-[11px] font-semibold tracking-[0.2em] text-[#39FF14] uppercase">
               Quezon City&apos;s Premier Mobile Bar
@@ -170,7 +198,7 @@ function Hero() {
           <h1 className="font-unbounded text-[clamp(2.6rem,7vw,5.5rem)] leading-[1.02] text-white mb-5">
             It&apos;s Never a Party
             <br />
-            <span className="text-[#39FF14]">Unless We&apos;re There.</span>
+            <span className="text-[#39FF14] neon-text">Unless We&apos;re There.</span>
           </h1>
 
           {/* Subheadline */}
@@ -183,7 +211,7 @@ function Hero() {
           <div className="flex flex-wrap gap-3">
             <a
               href="#contact"
-              className="inline-flex items-center gap-2 h-[52px] px-9 rounded-full bg-[#39FF14] text-[#0A0A0A] font-dm font-semibold text-[14px] hover:brightness-110 transition-all duration-200 shadow-[0_0_32px_rgba(57,255,20,0.30)]"
+              className="inline-flex items-center gap-2 h-[52px] px-9 rounded-full bg-[#39FF14] text-[#0A0A0A] font-dm font-semibold text-[14px] hover:brightness-110 transition-all duration-200 neon-box neon-pulse"
             >
               Book Your Bar
               <ArrowRight size={15} strokeWidth={2.4} />
@@ -205,7 +233,7 @@ function Hero() {
             {stats.map((stat, i) => (
               <div key={i} className="flex flex-col items-center sm:items-start gap-0.5">
                 <span
-                  className={`font-unbounded text-[1.6rem] sm:text-[2.2rem] leading-none ${stat.accent}`}
+                  className={`font-unbounded text-[1.6rem] sm:text-[2.2rem] leading-none ${stat.accent} ${stat.accent.includes("39FF14") ? "neon-text" : "neon-text-orange"}`}
                 >
                   {stat.value}
                 </span>
@@ -243,7 +271,7 @@ function About() {
       {/* Two-column content — edge to edge on image side */}
       <div className="grid md:grid-cols-[55fr_45fr] items-stretch min-h-[520px]">
         {/* Left — large image with neon left-border accent */}
-        <div className="relative overflow-hidden min-h-[320px] md:min-h-0 border-l-[3px] border-[#39FF14]">
+        <div className="relative overflow-hidden min-h-[320px] md:min-h-0 border-l-[3px] border-[#39FF14] neon-border">
           <Image
             src={images.aboutNeon}
             alt="Sober Club mixologist preparing a cocktail at an event"
@@ -403,7 +431,7 @@ function PackageCard({ pkg }: { pkg: PackageData }) {
         snap-start transition-transform duration-200 hover:-translate-y-1
         ${
           isInverted
-            ? "bg-[#39FF14] border border-[#39FF14]"
+            ? "bg-[#39FF14] border border-[#39FF14] neon-box"
             : "bg-[#1A1A1A] border border-white/6 hover:border-[#39FF14]/25"
         }
       `}
@@ -676,7 +704,7 @@ function Testimonials() {
       {/* Full-width content — no card, no border */}
       <div className="max-w-4xl mx-auto text-center">
         {/* Green accent line above */}
-        <div className="w-12 h-[3px] bg-[#39FF14] rounded-full mx-auto mb-10" />
+        <div className="w-12 h-[3px] bg-[#39FF14] rounded-full mx-auto mb-10 neon-line" />
 
         <blockquote>
           <p className="font-dm text-2xl sm:text-3xl text-white/80 leading-[1.55] italic mb-10 text-balance">
@@ -711,7 +739,7 @@ function InquiryForm() {
   return (
     <section id="contact" className="bg-[#0A0A0A] py-24 px-6 sm:px-10 lg:px-16">
       {/* Dark card with green left border */}
-      <div className="max-w-6xl mx-auto rounded-2xl overflow-hidden border border-white/6 border-l-[3px] border-l-[#39FF14] bg-[#111111]">
+      <div className="max-w-6xl mx-auto rounded-2xl overflow-hidden border border-white/6 border-l-[3px] border-l-[#39FF14] bg-[#111111] neon-border">
         <div className="grid lg:grid-cols-[42fr_58fr]">
           {/* Left — heading + contact info */}
           <div className="flex flex-col justify-between p-8 sm:p-12 lg:p-14 bg-[#0F0F0F] border-b lg:border-b-0 lg:border-r border-white/5">
@@ -923,7 +951,7 @@ function InquiryForm() {
               <div className="pt-1">
                 <button
                   type="submit"
-                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 h-[52px] px-10 rounded-full bg-[#39FF14] text-[#0A0A0A] font-dm font-semibold text-[14px] hover:brightness-110 active:scale-[0.97] transition-all duration-200 shadow-[0_0_28px_rgba(57,255,20,0.25)]"
+                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 h-[52px] px-10 rounded-full bg-[#39FF14] text-[#0A0A0A] font-dm font-semibold text-[14px] hover:brightness-110 active:scale-[0.97] transition-all duration-200 neon-box neon-pulse"
                 >
                   Send Inquiry
                   <ArrowRight size={15} strokeWidth={2.4} />
