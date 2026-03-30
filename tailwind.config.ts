@@ -13,7 +13,7 @@ const config: Config = {
         foreground: "var(--foreground)",
       },
       fontFamily: {
-        space: ["Space Grotesk", "sans-serif"],
+        unbounded: ["Unbounded", "sans-serif"],
         dm: ["DM Sans", "sans-serif"],
         cormorant: ["Cormorant Garamond", "serif"],
         jost: ["Jost", "sans-serif"],

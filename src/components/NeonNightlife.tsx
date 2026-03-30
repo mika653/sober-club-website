@@ -92,7 +92,7 @@ function Header() {
           className="flex items-center gap-2 select-none"
         >
           <span className="inline-block w-1 h-6 bg-[#39FF14] rounded-full flex-shrink-0" />
-          <span className="font-space text-[17px] tracking-[0.22em] text-white uppercase">
+          <span className="font-unbounded text-[17px] tracking-[0.22em] text-white uppercase">
             Sober Club
           </span>
         </a>
@@ -167,7 +167,7 @@ function Hero() {
           </div>
 
           {/* Main headline */}
-          <h1 className="font-space text-[clamp(2.6rem,7vw,5.5rem)] leading-[1.02] text-white mb-5">
+          <h1 className="font-unbounded text-[clamp(2.6rem,7vw,5.5rem)] leading-[1.02] text-white mb-5">
             It&apos;s Never a Party
             <br />
             <span className="text-[#39FF14]">Unless We&apos;re There.</span>
@@ -205,7 +205,7 @@ function Hero() {
             {stats.map((stat, i) => (
               <div key={i} className="flex flex-col items-center sm:items-start gap-0.5">
                 <span
-                  className={`font-space text-[1.6rem] sm:text-[2.2rem] leading-none ${stat.accent}`}
+                  className={`font-unbounded text-[1.6rem] sm:text-[2.2rem] leading-none ${stat.accent}`}
                 >
                   {stat.value}
                 </span>
@@ -264,7 +264,7 @@ function About() {
             </span>
           </div>
 
-          <h2 className="font-space text-[clamp(1.9rem,4vw,2.9rem)] text-white leading-[1.1] mb-6">
+          <h2 className="font-unbounded text-[clamp(1.9rem,4vw,2.9rem)] text-white leading-[1.1] mb-6">
             We Don&apos;t Just Mix Drinks.
             <br />
             <span className="text-white/45">We Make Memories.</span>
@@ -299,7 +299,7 @@ function About() {
           {marqueeItems.map((item, i) => (
             <span key={i} className="inline-flex items-center">
               <span
-                className={`font-space text-[13px] tracking-[0.18em] uppercase px-7 ${
+                className={`font-unbounded text-[13px] tracking-[0.18em] uppercase px-7 ${
                   i % 3 === 0
                     ? "text-[#39FF14]"
                     : i % 3 === 1
@@ -412,7 +412,7 @@ function PackageCard({ pkg }: { pkg: PackageData }) {
       <span
         aria-hidden="true"
         className={`
-          absolute -top-4 -right-2 font-space text-[7rem] leading-none select-none pointer-events-none
+          absolute -top-4 -right-2 font-unbounded text-[7rem] leading-none select-none pointer-events-none
           ${isInverted ? "text-[#0A0A0A]/10" : "text-white/[0.04]"}
         `}
       >
@@ -437,7 +437,7 @@ function PackageCard({ pkg }: { pkg: PackageData }) {
 
       {/* Price */}
       <div
-        className={`font-space text-[2rem] leading-none mb-1 ${
+        className={`font-unbounded text-[2rem] leading-none mb-1 ${
           isInverted ? "text-[#0A0A0A]" : pkg.priceAccent
         }`}
       >
@@ -520,7 +520,7 @@ function Packages() {
           </span>
         </div>
         <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
-          <h2 className="font-space text-[clamp(1.9rem,4vw,2.9rem)] text-white leading-[1.1]">
+          <h2 className="font-unbounded text-[clamp(1.9rem,4vw,2.9rem)] text-white leading-[1.1]">
             Choose Your Perfect Bar.
           </h2>
           <p className="font-dm text-[13px] text-white/40 max-w-xs leading-relaxed sm:text-right">
@@ -592,7 +592,7 @@ function Gallery() {
             Our Work
           </span>
         </div>
-        <h2 className="font-space text-[clamp(1.9rem,4vw,2.9rem)] text-white leading-[1.1]">
+        <h2 className="font-unbounded text-[clamp(1.9rem,4vw,2.9rem)] text-white leading-[1.1]">
           Scenes From Our Events.
         </h2>
       </div>
@@ -723,7 +723,7 @@ function InquiryForm() {
                 </span>
               </div>
 
-              <h2 className="font-space text-[clamp(1.8rem,3.5vw,2.7rem)] text-white leading-[1.1] mb-5">
+              <h2 className="font-unbounded text-[clamp(1.8rem,3.5vw,2.7rem)] text-white leading-[1.1] mb-5">
                 Let&apos;s Make Your
                 <br />
                 <span className="text-[#39FF14]">Event Legendary.</span>
@@ -947,7 +947,7 @@ function Footer() {
         <a
           href="#"
           aria-label="Sober Club home"
-          className="font-space text-[13px] tracking-[0.22em] text-white/40 hover:text-[#39FF14] transition-colors duration-200 uppercase whitespace-nowrap flex-shrink-0"
+          className="font-unbounded text-[13px] tracking-[0.22em] text-white/40 hover:text-[#39FF14] transition-colors duration-200 uppercase whitespace-nowrap flex-shrink-0"
         >
           Sober Club
         </a>
