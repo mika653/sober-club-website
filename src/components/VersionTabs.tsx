@@ -36,7 +36,7 @@ export default function VersionTabs({
   return (
     <div className="min-h-screen">
       {/* Sticky Tab Bar */}
-      <div className="sticky top-0 z-50 bg-black/95 backdrop-blur-md border-b border-white/10">
+      <div className="sticky top-0 z-[60] bg-black/95 backdrop-blur-md border-b border-white/10">
         <div className="max-w-7xl mx-auto px-4 py-3">
           <div className="flex items-center justify-between mb-2">
             <span className="text-white/60 text-xs font-medium tracking-wider uppercase">

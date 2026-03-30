@@ -1,280 +1,343 @@
 "use client";
 
 import Image from "next/image";
-import { Menu, Phone, Mail, MapPin } from "lucide-react";
+import { Phone, Mail, MapPin, ArrowRight, ChevronRight } from "lucide-react";
+import { images } from "@/lib/images";
 
-function FacebookIcon({ size = 16, strokeWidth = 1.8 }: { size?: number; strokeWidth?: number }) {
-  return (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round">
-      <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
-    </svg>
-  );
-}
+// ─── Inline SVG social icons ─────────────────────────────────────────────────
 
-function InstagramIcon({ size = 16, strokeWidth = 1.8 }: { size?: number; strokeWidth?: number }) {
-  return (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round">
-      <rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/>
-    </svg>
-  );
-}
-
-// ─── Reusable primitives ────────────────────────────────────────────────────
-
-function SectionLabel({
-  text,
-  accentColor = "green",
+function FacebookIcon({
+  size = 16,
+  strokeWidth = 1.8,
 }: {
-  text: string;
-  accentColor?: "green" | "orange";
+  size?: number;
+  strokeWidth?: number;
 }) {
-  const lineColor =
-    accentColor === "green" ? "bg-[#39FF14]" : "bg-[#FF6B00]";
-  const textColor =
-    accentColor === "green" ? "text-[#39FF14]" : "text-[#FF6B00]";
-
   return (
-    <div className="flex items-center gap-3 mb-4">
-      <span className={`inline-block w-6 h-[2px] ${lineColor}`} />
-      <span
-        className={`font-poppins text-xs font-semibold tracking-[0.18em] uppercase ${textColor}`}
-      >
-        {text}
-      </span>
-    </div>
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={strokeWidth}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
+    </svg>
   );
 }
 
-// ─── Header ─────────────────────────────────────────────────────────────────
+function InstagramIcon({
+  size = 16,
+  strokeWidth = 1.8,
+}: {
+  size?: number;
+  strokeWidth?: number;
+}) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={strokeWidth}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <rect width="20" height="20" x="2" y="2" rx="5" ry="5" />
+      <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+      <line x1="17.5" x2="17.51" y1="6.5" y2="6.5" />
+    </svg>
+  );
+}
+
+// ─── Keyframe styles injected once ───────────────────────────────────────────
+
+function GlobalStyles() {
+  return (
+    <style>{`
+      @keyframes marquee-scroll {
+        0%   { transform: translateX(0); }
+        100% { transform: translateX(-50%); }
+      }
+      .marquee-track {
+        animation: marquee-scroll 22s linear infinite;
+        will-change: transform;
+      }
+      .marquee-track:hover {
+        animation-play-state: paused;
+      }
+    `}</style>
+  );
+}
+
+// ─── Header ──────────────────────────────────────────────────────────────────
 
 function Header() {
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-[#0A0A0A]/90 backdrop-blur-md border-b border-white/5">
-      <div className="max-w-7xl mx-auto px-5 sm:px-8 h-16 flex items-center justify-between">
+    <header className="fixed top-0 left-0 right-0 z-50">
+      {/* Transparent gradient veil — fades into hero */}
+      <div className="absolute inset-0 bg-gradient-to-b from-[#0A0A0A]/80 via-[#0A0A0A]/30 to-transparent pointer-events-none" />
+
+      <div className="relative z-10 max-w-none px-6 sm:px-10 h-[72px] flex items-center justify-between">
         {/* Logo */}
         <a
           href="#"
           aria-label="Sober Club home"
-          className="font-righteous text-xl tracking-widest text-[#39FF14] select-none"
+          className="flex items-center gap-2 select-none"
         >
-          SOBER CLUB
+          <span className="inline-block w-1 h-6 bg-[#39FF14] rounded-full flex-shrink-0" />
+          <span className="font-bebas text-[17px] tracking-[0.22em] text-white uppercase">
+            Sober Club
+          </span>
         </a>
 
-        {/* Nav — desktop */}
-        <nav className="hidden md:flex items-center gap-8" aria-label="Primary">
-          <a
-            href="#packages"
-            className="font-poppins text-sm text-white/70 hover:text-[#39FF14] transition-colors duration-200"
-          >
-            Packages
-          </a>
-          <a
-            href="#gallery"
-            className="font-poppins text-sm text-white/70 hover:text-[#39FF14] transition-colors duration-200"
-          >
-            Gallery
-          </a>
-          <a
-            href="#contact"
-            className="font-poppins text-sm text-white/70 hover:text-[#39FF14] transition-colors duration-200"
-          >
-            Contact
-          </a>
+        {/* Desktop nav — minimal, no hamburger */}
+        <nav
+          className="hidden md:flex items-center gap-10"
+          aria-label="Primary navigation"
+        >
+          {[
+            { href: "#packages", label: "Packages" },
+            { href: "#gallery", label: "Gallery" },
+            { href: "#contact", label: "Contact" },
+          ].map(({ href, label }) => (
+            <a
+              key={href}
+              href={href}
+              className="font-outfit text-[13px] font-medium text-white/60 hover:text-white transition-colors duration-200 tracking-wide"
+            >
+              {label}
+            </a>
+          ))}
         </nav>
 
-        {/* Right side */}
-        <div className="flex items-center gap-3">
-          <a
-            href="#contact"
-            className="hidden sm:inline-flex items-center justify-center h-10 px-6 rounded-full bg-[#39FF14] text-[#0A0A0A] font-poppins font-semibold text-sm hover:brightness-110 transition-all duration-200"
-          >
-            Book Now
-          </a>
-          {/* Hamburger — mobile placeholder */}
-          <button
-            type="button"
-            aria-label="Open navigation menu"
-            className="md:hidden flex items-center justify-center w-10 h-10 rounded-full border border-white/10 text-white/70 hover:text-[#39FF14] hover:border-[#39FF14]/40 transition-colors duration-200"
-          >
-            <Menu size={20} strokeWidth={1.8} />
-          </button>
-        </div>
+        {/* Book Now pill */}
+        <a
+          href="#contact"
+          className="inline-flex items-center gap-2 h-10 px-6 rounded-full bg-[#39FF14] text-[#0A0A0A] font-outfit font-semibold text-[13px] hover:brightness-110 transition-all duration-200 flex-shrink-0"
+        >
+          Book Now
+          <ChevronRight size={14} strokeWidth={2.5} />
+        </a>
       </div>
     </header>
   );
 }
 
-// ─── Hero ────────────────────────────────────────────────────────────────────
+// ─── Hero (100vh, full bleed, stats embedded inside) ─────────────────────────
 
 function Hero() {
+  const stats = [
+    { value: "20+", label: "Years Active", accent: "text-[#39FF14]" },
+    { value: "1,000+", label: "Events Served", accent: "text-[#FF6B00]" },
+    { value: "5,000", label: "Max Guests / Event", accent: "text-[#39FF14]" },
+  ];
+
   return (
-    <section className="relative h-[560px] w-full overflow-hidden">
-      {/* Background image */}
+    <section className="relative w-full h-screen min-h-[600px] overflow-hidden">
+      {/* Full-bleed background image — no border-radius, no padding */}
       <Image
-        src="/images/hero-neon.jpg"
-        alt="Sober Club mobile bar setup at a vibrant nighttime event"
+        src={images.heroNeon}
+        alt="Sober Club mobile bar setup at a vibrant nighttime event in Quezon City"
         fill
         priority
-        className="object-cover object-center"
+        className="object-cover object-center scale-[1.02]"
         sizes="100vw"
       />
-      {/* Dark overlay */}
-      <div className="absolute inset-0 bg-gradient-to-b from-[#0A0A0A]/70 via-[#0A0A0A]/50 to-[#0A0A0A]/90" />
 
-      {/* Content */}
-      <div className="relative z-10 h-full flex flex-col justify-end pb-12 px-5 sm:px-8 max-w-7xl mx-auto">
-        {/* Badge */}
-        <div className="mb-5 inline-flex self-start items-center gap-2 rounded-full border border-[#39FF14]/40 bg-[#39FF14]/10 px-4 py-1.5">
-          <span className="inline-block w-1.5 h-1.5 rounded-full bg-[#39FF14]" />
-          <span className="font-poppins text-[11px] font-semibold tracking-widest text-[#39FF14] uppercase">
-            20+ Years of Mixing Memories
-          </span>
+      {/* Heavy cinematic gradient — bottom darkness for legibility */}
+      <div className="absolute inset-0 bg-gradient-to-b from-[#0A0A0A]/60 via-transparent to-[#0A0A0A]" />
+      <div className="absolute inset-0 bg-gradient-to-r from-[#0A0A0A]/70 via-transparent to-transparent" />
+
+      {/* Vertically centered headline content */}
+      <div className="absolute inset-0 flex flex-col justify-center px-6 sm:px-10 lg:px-16 pt-[72px]">
+        <div className="max-w-2xl">
+          {/* Pill badge */}
+          <div className="mb-7 inline-flex items-center gap-2.5 rounded-full border border-[#39FF14]/35 bg-[#39FF14]/8 px-4 py-1.5 backdrop-blur-sm">
+            <span className="inline-block w-1.5 h-1.5 rounded-full bg-[#39FF14] animate-pulse" />
+            <span className="font-outfit text-[11px] font-semibold tracking-[0.2em] text-[#39FF14] uppercase">
+              Quezon City&apos;s Premier Mobile Bar
+            </span>
+          </div>
+
+          {/* Main headline */}
+          <h1 className="font-bebas text-[clamp(2.6rem,7vw,5.5rem)] leading-[1.02] text-white mb-5">
+            It&apos;s Never a Party
+            <br />
+            <span className="text-[#39FF14]">Unless We&apos;re There.</span>
+          </h1>
+
+          {/* Subheadline */}
+          <p className="font-outfit text-[15px] sm:text-base text-white/65 max-w-md mb-9 leading-[1.7]">
+            Crafted cocktails, skilled mixologists, and bar setups that steal
+            the spotlight — brought directly to your venue across Metro Manila.
+          </p>
+
+          {/* CTAs */}
+          <div className="flex flex-wrap gap-3">
+            <a
+              href="#contact"
+              className="inline-flex items-center gap-2 h-[52px] px-9 rounded-full bg-[#39FF14] text-[#0A0A0A] font-outfit font-semibold text-[14px] hover:brightness-110 transition-all duration-200 shadow-[0_0_32px_rgba(57,255,20,0.30)]"
+            >
+              Book Your Bar
+              <ArrowRight size={15} strokeWidth={2.4} />
+            </a>
+            <a
+              href="#packages"
+              className="inline-flex items-center gap-2 h-[52px] px-9 rounded-full bg-white/6 border border-white/14 text-white font-outfit font-semibold text-[14px] hover:bg-white/10 hover:border-white/25 transition-all duration-200 backdrop-blur-sm"
+            >
+              See Packages
+            </a>
+          </div>
         </div>
+      </div>
 
-        {/* Headline */}
-        <h1 className="font-righteous text-4xl sm:text-5xl md:text-6xl leading-[1.08] text-white mb-5 whitespace-pre-line">
-          {"Your Event.\nOur Bar.\nUnforgettable Nights."}
-        </h1>
-
-        {/* Subheadline */}
-        <p className="font-poppins text-sm sm:text-base text-white/70 max-w-md mb-8 leading-relaxed">
-          Quezon City&rsquo;s premier mobile bar service. We bring the party to
-          you — crafted cocktails, skilled mixologists, and setups that steal
-          the show.
-        </p>
-
-        {/* CTAs */}
-        <div className="flex flex-wrap gap-3">
-          <a
-            href="#contact"
-            className="inline-flex items-center justify-center h-12 px-8 rounded-full bg-[#39FF14] text-[#0A0A0A] font-poppins font-semibold text-sm hover:brightness-110 transition-all duration-200"
-          >
-            Book Your Bar
-          </a>
-          <a
-            href="#packages"
-            className="inline-flex items-center justify-center h-12 px-8 rounded-full bg-white/5 border border-white/15 text-[#39FF14] font-poppins font-semibold text-sm hover:bg-[#39FF14]/10 hover:border-[#39FF14]/40 transition-all duration-200"
-          >
-            View Packages
-          </a>
+      {/* Stats — glass strip pinned to bottom, inside the hero */}
+      <div className="absolute bottom-0 left-0 right-0 z-10">
+        <div className="bg-black/40 backdrop-blur-md border-t border-white/8">
+          <div className="max-w-none px-6 sm:px-10 lg:px-16 py-5 grid grid-cols-3 gap-2 sm:gap-6">
+            {stats.map((stat, i) => (
+              <div key={i} className="flex flex-col items-center sm:items-start gap-0.5">
+                <span
+                  className={`font-bebas text-[1.6rem] sm:text-[2.2rem] leading-none ${stat.accent}`}
+                >
+                  {stat.value}
+                </span>
+                <span className="font-outfit text-[10px] sm:text-[11px] text-white/45 uppercase tracking-[0.14em] leading-snug text-center sm:text-left">
+                  {stat.label}
+                </span>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </section>
   );
 }
 
-// ─── Stats Bar ───────────────────────────────────────────────────────────────
-
-function StatsBar() {
-  const stats = [
-    { value: "20+", label: "Years of Experience", valueColor: "text-[#39FF14]" },
-    { value: "1,000+", label: "Parties Hosted", valueColor: "text-[#FF6B00]" },
-    { value: "5,000", label: "Guests Per Event", valueColor: "text-[#39FF14]" },
-  ];
-
-  return (
-    <div className="bg-[#111111] border-y border-white/5">
-      <div className="max-w-7xl mx-auto px-5 sm:px-8 py-8 grid grid-cols-3 gap-4 text-center">
-        {stats.map((stat, i) => (
-          <div key={i} className="flex flex-col items-center gap-1">
-            <span
-              className={`font-righteous text-2xl sm:text-4xl ${stat.valueColor}`}
-            >
-              {stat.value}
-            </span>
-            <span className="font-poppins text-[11px] sm:text-xs text-white/50 uppercase tracking-widest leading-snug">
-              {stat.label}
-            </span>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-// ─── About Section ───────────────────────────────────────────────────────────
+// ─── About — two-column + marquee ────────────────────────────────────────────
 
 function About() {
   const eventTypes = [
-    { label: "Weddings", color: "text-[#39FF14]" },
-    { label: "Debuts", color: "text-[#FF6B00]" },
-    { label: "Corporate", color: "text-[#39FF14]" },
-    { label: "Christmas", color: "text-[#FF6B00]" },
-    { label: "Yacht Parties", color: "text-[#39FF14]" },
-    { label: "Fiestas", color: "text-[#FF6B00]" },
+    "Weddings",
+    "Debuts",
+    "Corporate",
+    "Christmas",
+    "Yacht Parties",
+    "Fiestas",
+    "Product Launches",
+    "Birthday Parties",
   ];
 
+  // Duplicate so the seamless marquee loop works
+  const marqueeItems = [...eventTypes, ...eventTypes];
+
   return (
-    <section className="bg-[#0A0A0A] py-20 px-5 sm:px-8">
-      <div className="max-w-7xl mx-auto">
-        <div className="grid md:grid-cols-2 gap-12 items-center">
-          {/* Text side */}
-          <div>
-            <SectionLabel text="What We Offer" accentColor="green" />
-            <h2 className="font-righteous text-3xl sm:text-4xl text-white mb-5 leading-tight">
-              We Don&rsquo;t Just Mix Drinks.
-            </h2>
-            <p className="font-poppins text-sm sm:text-base text-white/60 leading-relaxed mb-6">
-              Sober Club delivers a full mobile bar experience — from curated
-              cocktail menus and professional mixologists to stunning bar setups
-              that become the centrepiece of any event. Based in Quezon City, we
-              serve Metro Manila and beyond, bringing high-energy bar service
-              straight to your venue.
-            </p>
-            <p className="font-poppins text-sm sm:text-base text-white/60 leading-relaxed mb-8">
-              Every event is unique, and we treat it that way. Our team works
-              closely with you to craft a drink experience that matches your
-              theme, your crowd, and your vibe.
-            </p>
+    <section className="bg-[#0A0A0A] pt-24 pb-0">
+      {/* Two-column content — edge to edge on image side */}
+      <div className="grid md:grid-cols-[55fr_45fr] items-stretch min-h-[520px]">
+        {/* Left — large image with neon left-border accent */}
+        <div className="relative overflow-hidden min-h-[320px] md:min-h-0 border-l-[3px] border-[#39FF14]">
+          <Image
+            src={images.aboutNeon}
+            alt="Sober Club mixologist preparing a cocktail at an event"
+            fill
+            className="object-cover object-center transition-transform duration-700 hover:scale-105"
+            sizes="(max-width: 768px) 100vw, 55vw"
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-[#0A0A0A]/20 via-transparent to-[#0A0A0A]/50" />
+        </div>
 
-            {/* Event type pills */}
-            <div className="flex flex-wrap gap-2">
-              {eventTypes.map((type) => (
-                <span
-                  key={type.label}
-                  className={`font-poppins text-xs font-semibold px-4 py-2 rounded-full bg-[#1A1A1A] border border-white/8 ${type.color}`}
-                >
-                  {type.label}
-                </span>
-              ))}
-            </div>
+        {/* Right — text content */}
+        <div className="flex flex-col justify-center px-8 sm:px-12 lg:px-16 py-16">
+          {/* Section label */}
+          <div className="flex items-center gap-3 mb-5">
+            <span className="inline-block w-6 h-[2px] bg-[#39FF14]" />
+            <span className="font-outfit text-[11px] font-semibold tracking-[0.2em] uppercase text-[#39FF14]">
+              About Us
+            </span>
           </div>
 
-          {/* Image side */}
-          <div className="relative h-72 sm:h-96 rounded-2xl overflow-hidden">
-            <Image
-              src="/images/about-neon.jpg"
-              alt="Sober Club team preparing cocktails at an event"
-              fill
-              className="object-cover object-center"
-              sizes="(max-width: 768px) 100vw, 50vw"
-            />
-            <div className="absolute inset-0 bg-gradient-to-tr from-[#0A0A0A]/40 to-transparent" />
-          </div>
+          <h2 className="font-bebas text-[clamp(1.9rem,4vw,2.9rem)] text-white leading-[1.1] mb-6">
+            We Don&apos;t Just Mix Drinks.
+            <br />
+            <span className="text-white/45">We Make Memories.</span>
+          </h2>
+
+          <p className="font-outfit text-[14px] sm:text-[15px] text-white/60 leading-[1.75] mb-5">
+            Sober Club delivers a full mobile bar experience — from curated
+            cocktail menus and professional mixologists to stunning bar setups
+            that become the centrepiece of any event. Based in Quezon City, we
+            serve Metro Manila and beyond.
+          </p>
+
+          <p className="font-outfit text-[14px] sm:text-[15px] text-white/50 leading-[1.75] mb-10">
+            Every event is unique, and we treat it that way. Our team works
+            closely with you to craft a drink experience that matches your
+            theme, your crowd, and your vibe.
+          </p>
+
+          <a
+            href="#contact"
+            className="self-start inline-flex items-center gap-2 h-11 px-7 rounded-full border border-[#39FF14]/40 text-[#39FF14] font-outfit font-semibold text-[13px] hover:bg-[#39FF14]/10 hover:border-[#39FF14]/70 transition-all duration-200"
+          >
+            Get a Free Quote
+            <ArrowRight size={14} strokeWidth={2.4} />
+          </a>
+        </div>
+      </div>
+
+      {/* Marquee strip — full bleed, no side padding */}
+      <div className="mt-16 overflow-hidden border-y border-white/6 bg-[#111111] py-4 select-none">
+        <div className="marquee-track flex items-center gap-0 whitespace-nowrap w-max">
+          {marqueeItems.map((item, i) => (
+            <span key={i} className="inline-flex items-center">
+              <span
+                className={`font-bebas text-[13px] tracking-[0.18em] uppercase px-7 ${
+                  i % 3 === 0
+                    ? "text-[#39FF14]"
+                    : i % 3 === 1
+                    ? "text-white/35"
+                    : "text-[#FF6B00]"
+                }`}
+              >
+                {item}
+              </span>
+              <span className="inline-block w-1.5 h-1.5 rounded-full bg-white/15 flex-shrink-0" />
+            </span>
+          ))}
         </div>
       </div>
     </section>
   );
 }
 
-// ─── Packages ────────────────────────────────────────────────────────────────
+// ─── Packages — horizontal scroll on mobile, 4-col grid on desktop ───────────
 
-interface PackageCard {
+interface PackageData {
+  number: string;
   name: string;
   price: string;
-  priceColor: string;
   description: string;
   features: string[];
   inverted?: boolean;
   badge?: string;
+  priceAccent: string;
 }
 
-const packages: PackageCard[] = [
+const packageData: PackageData[] = [
   {
+    number: "01",
     name: "Shooters & Cocktail Bar",
     price: "P12,500",
-    priceColor: "text-[#39FF14]",
-    description: "A classic bar setup perfect for intimate gatherings.",
+    priceAccent: "text-[#39FF14]",
+    description: "A classic setup perfect for intimate gatherings with curated cocktail selections.",
     features: [
       "Up to 50 guests",
       "6 cocktail selections",
@@ -284,10 +347,11 @@ const packages: PackageCard[] = [
     ],
   },
   {
+    number: "02",
     name: "Cocktail Slushie Bar",
     price: "P20,000",
-    priceColor: "text-[#FF6B00]",
-    description: "Frozen cocktail fun — the crowd pleaser at every event.",
+    priceAccent: "text-[#FF6B00]",
+    description: "Frozen cocktail fun — the guaranteed crowd pleaser at every kind of event.",
     features: [
       "Up to 100 guests",
       "Slushie machine included",
@@ -297,10 +361,11 @@ const packages: PackageCard[] = [
     ],
   },
   {
+    number: "03",
     name: "Sangria Bar",
     price: "P25,000",
-    priceColor: "text-[#39FF14]",
-    description: "Elegant sangria station with premium fruit garnishes.",
+    priceAccent: "text-[#39FF14]",
+    description: "Elegant sangria station with premium fruit garnishes and signature blends.",
     features: [
       "Up to 150 guests",
       "4 sangria varieties",
@@ -310,10 +375,11 @@ const packages: PackageCard[] = [
     ],
   },
   {
+    number: "04",
     name: "Premium Bar",
     price: "P30,000",
-    priceColor: "text-[#0A0A0A]",
-    description: "Our full-service premium experience — no compromises.",
+    priceAccent: "text-[#0A0A0A]",
+    description: "Our full-service premium experience — zero compromises, maximum impact.",
     features: [
       "Unlimited guests",
       "Full spirits selection",
@@ -326,140 +392,274 @@ const packages: PackageCard[] = [
   },
 ];
 
-function Packages() {
-  return (
-    <section id="packages" className="bg-[#111111] py-20 px-5 sm:px-8">
-      <div className="max-w-7xl mx-auto">
-        <div className="mb-12">
-          <SectionLabel text="Our Bar Packages" accentColor="orange" />
-          <h2 className="font-righteous text-3xl sm:text-4xl text-white leading-tight">
-            Choose Your Perfect Bar.
-          </h2>
-        </div>
+function PackageCard({ pkg }: { pkg: PackageData }) {
+  const isInverted = !!pkg.inverted;
 
-        <div className="grid sm:grid-cols-2 xl:grid-cols-4 gap-5">
-          {packages.map((pkg) => (
-            <div
-              key={pkg.name}
-              className={`relative flex flex-col rounded-2xl p-6 border transition-transform duration-200 hover:-translate-y-1 ${
-                pkg.inverted
-                  ? "bg-[#39FF14] border-[#39FF14]"
-                  : "bg-[#1A1A1A] border-white/8 hover:border-[#39FF14]/30"
+  return (
+    <div
+      className={`
+        relative flex-shrink-0 w-[280px] md:w-auto
+        flex flex-col rounded-xl p-6 overflow-hidden
+        snap-start transition-transform duration-200 hover:-translate-y-1
+        ${
+          isInverted
+            ? "bg-[#39FF14] border border-[#39FF14]"
+            : "bg-[#1A1A1A] border border-white/6 hover:border-[#39FF14]/25"
+        }
+      `}
+    >
+      {/* Giant faded number — decorative background element */}
+      <span
+        aria-hidden="true"
+        className={`
+          absolute -top-4 -right-2 font-bebas text-[7rem] leading-none select-none pointer-events-none
+          ${isInverted ? "text-[#0A0A0A]/10" : "text-white/[0.04]"}
+        `}
+      >
+        {pkg.number}
+      </span>
+
+      {/* Badge */}
+      {pkg.badge && (
+        <span className="absolute -top-px left-5 inline-flex items-center justify-center px-3.5 py-1 rounded-b-lg bg-[#0A0A0A] border border-t-0 border-[#39FF14]/30 font-outfit text-[9px] font-semibold tracking-[0.2em] text-[#39FF14] uppercase">
+          {pkg.badge}
+        </span>
+      )}
+
+      {/* Number indicator */}
+      <span
+        className={`font-outfit text-[11px] font-semibold tracking-[0.18em] uppercase mb-4 mt-3 ${
+          isInverted ? "text-[#0A0A0A]/50" : "text-white/20"
+        }`}
+      >
+        {pkg.number}
+      </span>
+
+      {/* Price */}
+      <div
+        className={`font-bebas text-[2rem] leading-none mb-1 ${
+          isInverted ? "text-[#0A0A0A]" : pkg.priceAccent
+        }`}
+      >
+        {pkg.price}
+      </div>
+
+      {/* Name */}
+      <h3
+        className={`font-outfit font-semibold text-[15px] leading-snug mb-3 ${
+          isInverted ? "text-[#0A0A0A]" : "text-white"
+        }`}
+      >
+        {pkg.name}
+      </h3>
+
+      {/* Description */}
+      <p
+        className={`font-outfit text-[12px] leading-[1.65] mb-5 ${
+          isInverted ? "text-[#0A0A0A]/65" : "text-white/45"
+        }`}
+      >
+        {pkg.description}
+      </p>
+
+      {/* Divider */}
+      <div
+        className={`w-full h-px mb-5 ${
+          isInverted ? "bg-[#0A0A0A]/15" : "bg-white/6"
+        }`}
+      />
+
+      {/* Feature list */}
+      <ul className="flex flex-col gap-2.5 flex-1">
+        {pkg.features.map((feature) => (
+          <li key={feature} className="flex items-center gap-2.5">
+            <span
+              className={`flex-shrink-0 inline-block w-1.5 h-1.5 rounded-full ${
+                isInverted ? "bg-[#0A0A0A]/40" : "bg-[#39FF14]"
+              }`}
+            />
+            <span
+              className={`font-outfit text-[12px] ${
+                isInverted ? "text-[#0A0A0A]/75" : "text-white/55"
               }`}
             >
-              {/* Most Popular badge */}
-              {pkg.badge && (
-                <span className="absolute -top-3 left-1/2 -translate-x-1/2 inline-flex items-center justify-center px-4 py-1 rounded-full bg-[#0A0A0A] border border-[#39FF14]/40 font-poppins text-[10px] font-semibold tracking-widest text-[#39FF14] uppercase whitespace-nowrap">
-                  {pkg.badge}
-                </span>
-              )}
+              {feature}
+            </span>
+          </li>
+        ))}
+      </ul>
 
-              {/* Price */}
-              <div
-                className={`font-righteous text-3xl mb-1 ${pkg.inverted ? "text-[#0A0A0A]" : pkg.priceColor}`}
-              >
-                {pkg.price}
-              </div>
+      {/* CTA */}
+      <a
+        href="#contact"
+        className={`
+          mt-7 inline-flex items-center justify-center h-11 rounded-full
+          font-outfit font-semibold text-[13px] transition-all duration-200
+          ${
+            isInverted
+              ? "bg-[#0A0A0A] text-[#39FF14] hover:bg-[#0A0A0A]/85"
+              : "bg-white/5 border border-white/10 text-white hover:bg-[#39FF14]/8 hover:border-[#39FF14]/35 hover:text-[#39FF14]"
+          }
+        `}
+      >
+        Book This Package
+      </a>
+    </div>
+  );
+}
 
-              {/* Name */}
-              <h3
-                className={`font-poppins font-semibold text-base mb-3 leading-snug ${
-                  pkg.inverted ? "text-[#0A0A0A]" : "text-white"
-                }`}
-              >
-                {pkg.name}
-              </h3>
-
-              {/* Description */}
-              <p
-                className={`font-poppins text-xs leading-relaxed mb-5 ${
-                  pkg.inverted ? "text-[#0A0A0A]/70" : "text-white/50"
-                }`}
-              >
-                {pkg.description}
-              </p>
-
-              {/* Divider */}
-              <div
-                className={`w-full h-px mb-5 ${
-                  pkg.inverted ? "bg-[#0A0A0A]/20" : "bg-white/8"
-                }`}
-              />
-
-              {/* Features */}
-              <ul className="flex flex-col gap-2 flex-1">
-                {pkg.features.map((feature) => (
-                  <li key={feature} className="flex items-center gap-2">
-                    <span
-                      className={`inline-block w-1 h-1 rounded-full flex-shrink-0 ${
-                        pkg.inverted ? "bg-[#0A0A0A]/50" : "bg-[#39FF14]"
-                      }`}
-                    />
-                    <span
-                      className={`font-poppins text-xs ${
-                        pkg.inverted ? "text-[#0A0A0A]/80" : "text-white/60"
-                      }`}
-                    >
-                      {feature}
-                    </span>
-                  </li>
-                ))}
-              </ul>
-
-              {/* CTA */}
-              <a
-                href="#contact"
-                className={`mt-6 inline-flex items-center justify-center h-11 rounded-full font-poppins font-semibold text-sm transition-all duration-200 ${
-                  pkg.inverted
-                    ? "bg-[#0A0A0A] text-[#39FF14] hover:bg-[#111111]"
-                    : "bg-white/5 border border-white/10 text-white hover:bg-[#39FF14]/10 hover:border-[#39FF14]/40 hover:text-[#39FF14]"
-                }`}
-              >
-                Book This Package
-              </a>
-            </div>
-          ))}
+function Packages() {
+  return (
+    <section id="packages" className="bg-[#111111] py-24">
+      {/* Section header — padded */}
+      <div className="px-6 sm:px-10 lg:px-16 mb-12">
+        <div className="flex items-center gap-3 mb-4">
+          <span className="inline-block w-6 h-[2px] bg-[#FF6B00]" />
+          <span className="font-outfit text-[11px] font-semibold tracking-[0.2em] uppercase text-[#FF6B00]">
+            Bar Packages
+          </span>
         </div>
+        <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
+          <h2 className="font-bebas text-[clamp(1.9rem,4vw,2.9rem)] text-white leading-[1.1]">
+            Choose Your Perfect Bar.
+          </h2>
+          <p className="font-outfit text-[13px] text-white/40 max-w-xs leading-relaxed sm:text-right">
+            All packages include delivery, setup, and teardown within Metro Manila.
+          </p>
+        </div>
+      </div>
+
+      {/* Mobile: horizontal scroll with snap; Desktop: 4-column grid */}
+      <div
+        className="
+          md:hidden
+          flex gap-4 overflow-x-auto snap-x snap-mandatory
+          pb-4 px-6 sm:px-10
+          scrollbar-none
+          [scrollbar-width:none]
+          [-ms-overflow-style:none]
+        "
+      >
+        {packageData.map((pkg) => (
+          <PackageCard key={pkg.number} pkg={pkg} />
+        ))}
+        {/* Trailing spacer so last card has breathing room */}
+        <div className="flex-shrink-0 w-6" />
+      </div>
+
+      <div className="hidden md:grid md:grid-cols-4 gap-5 px-6 sm:px-10 lg:px-16">
+        {packageData.map((pkg) => (
+          <PackageCard key={pkg.number} pkg={pkg} />
+        ))}
       </div>
     </section>
   );
 }
 
-// ─── Gallery ─────────────────────────────────────────────────────────────────
-
-const galleryImages = [
-  { src: "/images/gallery-1.jpg", alt: "Sober Club neon bar setup at a wedding reception" },
-  { src: "/images/gallery-2.jpg", alt: "Mixologist crafting cocktails at a debut party" },
-  { src: "/images/gallery-3.jpg", alt: "Cocktail slushie bar at a corporate event" },
-  { src: "/images/gallery-4.jpg", alt: "Premium bar setup at a rooftop yacht party" },
-];
+// ─── Gallery — masonry-style, first image spans 2 rows ───────────────────────
 
 function Gallery() {
-  return (
-    <section id="gallery" className="bg-[#0A0A0A] py-20 px-5 sm:px-8">
-      <div className="max-w-7xl mx-auto">
-        <div className="mb-12">
-          <SectionLabel text="Our Work" accentColor="green" />
-          <h2 className="font-righteous text-3xl sm:text-4xl text-white leading-tight">
-            Scenes From Our Events.
-          </h2>
-        </div>
+  const galleryItems = [
+    {
+      src: images.gallery1,
+      alt: "Sober Club neon bar setup at a wedding reception in Quezon City",
+      span: true,
+    },
+    {
+      src: images.gallery2,
+      alt: "Mixologist crafting cocktails at a debut party",
+      span: false,
+    },
+    {
+      src: images.gallery3,
+      alt: "Cocktail slushie bar at a corporate event",
+      span: false,
+    },
+    {
+      src: images.gallery4,
+      alt: "Premium bar setup at a rooftop event",
+      span: false,
+    },
+  ];
 
-        <div className="grid grid-cols-2 gap-3 sm:gap-4">
-          {galleryImages.map((img, i) => (
+  return (
+    <section id="gallery" className="bg-[#0A0A0A] py-24">
+      {/* Section header */}
+      <div className="px-6 sm:px-10 lg:px-16 mb-12">
+        <div className="flex items-center gap-3 mb-4">
+          <span className="inline-block w-6 h-[2px] bg-[#39FF14]" />
+          <span className="font-outfit text-[11px] font-semibold tracking-[0.2em] uppercase text-[#39FF14]">
+            Our Work
+          </span>
+        </div>
+        <h2 className="font-bebas text-[clamp(1.9rem,4vw,2.9rem)] text-white leading-[1.1]">
+          Scenes From Our Events.
+        </h2>
+      </div>
+
+      {/* Masonry grid — full bleed, no outer padding */}
+      <div className="px-6 sm:px-10 lg:px-16">
+        {/* Mobile: simple 2-col grid */}
+        <div className="grid grid-cols-2 gap-3 md:hidden">
+          {galleryItems.map((item, i) => (
             <div
               key={i}
-              className="relative overflow-hidden"
-              style={{ borderRadius: 12, aspectRatio: "4 / 3" }}
+              className="relative overflow-hidden rounded-xl"
+              style={{ aspectRatio: i === 0 ? "3/4" : "1/1" }}
             >
               <Image
-                src={img.src}
-                alt={img.alt}
+                src={item.src}
+                alt={item.alt}
                 fill
                 className="object-cover object-center transition-transform duration-500 hover:scale-105"
-                sizes="(max-width: 640px) 50vw, (max-width: 1280px) 50vw, 33vw"
+                sizes="50vw"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#0A0A0A]/40 to-transparent pointer-events-none" />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#0A0A0A]/50 to-transparent pointer-events-none" />
+            </div>
+          ))}
+        </div>
+
+        {/* Desktop: masonry-style grid with row-span */}
+        <div
+          className="hidden md:grid gap-3"
+          style={{
+            gridTemplateColumns: "1.3fr 1fr 1fr",
+            gridTemplateRows: "260px 260px",
+          }}
+        >
+          {/* First image — large, spans 2 rows */}
+          <div
+            className="relative overflow-hidden rounded-xl"
+            style={{ gridRow: "span 2" }}
+          >
+            <Image
+              src={galleryItems[0].src}
+              alt={galleryItems[0].alt}
+              fill
+              className="object-cover object-center transition-transform duration-500 hover:scale-105"
+              sizes="40vw"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#0A0A0A]/50 to-transparent pointer-events-none" />
+            {/* Neon corner tag */}
+            <div className="absolute bottom-4 left-4 inline-flex items-center gap-2 rounded-full bg-black/50 backdrop-blur-sm border border-[#39FF14]/30 px-3 py-1.5">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#39FF14] flex-shrink-0" />
+              <span className="font-outfit text-[10px] font-semibold text-[#39FF14] tracking-wider uppercase">
+                Featured
+              </span>
+            </div>
+          </div>
+
+          {/* Remaining 3 images — normal height */}
+          {galleryItems.slice(1).map((item, i) => (
+            <div key={i} className="relative overflow-hidden rounded-xl">
+              <Image
+                src={item.src}
+                alt={item.alt}
+                fill
+                className="object-cover object-center transition-transform duration-500 hover:scale-105"
+                sizes="30vw"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#0A0A0A]/50 to-transparent pointer-events-none" />
             </div>
           ))}
         </div>
@@ -468,347 +668,338 @@ function Gallery() {
   );
 }
 
-// ─── Testimonials ────────────────────────────────────────────────────────────
+// ─── Testimonials — full-width dark strip, floating oversized quote ───────────
 
 function Testimonials() {
   return (
-    <section className="bg-[#111111] py-20 px-5 sm:px-8">
-      <div className="max-w-3xl mx-auto text-center">
-        <SectionLabel text="What Clients Say" accentColor="orange" />
-        <h2 className="font-righteous text-3xl sm:text-4xl text-white leading-tight mb-12">
-          They Loved Every Sip.
-        </h2>
+    <section className="bg-[#111111] py-24 px-6 sm:px-10 lg:px-16">
+      {/* Full-width content — no card, no border */}
+      <div className="max-w-4xl mx-auto text-center">
+        {/* Green accent line above */}
+        <div className="w-12 h-[3px] bg-[#39FF14] rounded-full mx-auto mb-10" />
 
-        <div className="bg-[#1A1A1A] border border-white/8 rounded-2xl p-8 sm:p-10 text-left">
-          {/* Quote mark */}
-          <div
-            aria-hidden="true"
-            className="font-righteous text-6xl text-[#39FF14]/20 leading-none mb-4 select-none"
-          >
-            &ldquo;
-          </div>
-
-          <blockquote>
-            <p className="font-poppins text-base sm:text-lg text-white/80 leading-relaxed mb-6">
-              Sober Club absolutely made our wedding. From the custom cocktail
-              menu to the gorgeous bar setup, every detail was perfect. Our
-              guests are still talking about the drinks months later. If you
-              want a bar service that actually elevates your event, these are
-              your people.
-            </p>
-            <footer>
-              <cite className="font-poppins text-sm font-semibold text-[#39FF14] not-italic">
-                — Maria S., Wedding Reception
-              </cite>
-            </footer>
-          </blockquote>
-        </div>
+        <blockquote>
+          <p className="font-outfit text-2xl sm:text-3xl text-white/80 leading-[1.55] italic mb-10 text-balance">
+            &ldquo;Sober Club absolutely made our wedding. From the custom cocktail
+            menu to the gorgeous bar setup, every detail was perfect. Our guests
+            are still talking about the drinks months later. If you want a bar
+            service that actually elevates your event, these are your people.&rdquo;
+          </p>
+          <footer className="flex flex-col items-center gap-1">
+            <cite className="font-outfit text-[14px] font-semibold text-[#39FF14] not-italic tracking-wide">
+              Maria S.
+            </cite>
+            <span className="font-outfit text-[12px] text-white/30 tracking-widest uppercase not-italic">
+              Wedding Reception &mdash; Quezon City
+            </span>
+          </footer>
+        </blockquote>
       </div>
     </section>
   );
 }
 
-// ─── Inquiry Form ────────────────────────────────────────────────────────────
+// ─── Inquiry Form — split layout ──────────────────────────────────────────────
 
 function InquiryForm() {
-  const labelClass =
-    "font-poppins text-xs font-semibold text-[#39FF14] uppercase tracking-wide mb-1.5 block";
   const inputClass =
-    "w-full bg-[#1A1A1A] border border-white/10 rounded-xl px-4 py-3 font-poppins text-sm text-white placeholder-white/25 focus:outline-none focus:border-[#39FF14]/50 focus:ring-1 focus:ring-[#39FF14]/30 transition-colors duration-200";
-  const selectClass =
-    "w-full bg-[#1A1A1A] border border-white/10 rounded-xl px-4 py-3 font-poppins text-sm text-white focus:outline-none focus:border-[#39FF14]/50 focus:ring-1 focus:ring-[#39FF14]/30 transition-colors duration-200 appearance-none";
+    "w-full bg-[#0A0A0A] border border-white/8 rounded-xl px-4 py-3 font-outfit text-[13px] text-white placeholder-white/20 focus:outline-none focus:border-[#39FF14]/45 focus:ring-1 focus:ring-[#39FF14]/20 transition-colors duration-200";
+  const labelClass =
+    "font-outfit text-[11px] font-semibold text-[#39FF14] uppercase tracking-[0.14em] mb-1.5 block";
+  const selectClass = `${inputClass} appearance-none cursor-pointer`;
 
   return (
-    <section id="contact" className="bg-[#0A0A0A] py-20 px-5 sm:px-8">
-      <div className="max-w-3xl mx-auto">
-        {/* Header */}
-        <div className="mb-10">
-          <SectionLabel text="Book Your Bar" accentColor="green" />
-          <h2 className="font-righteous text-3xl sm:text-4xl text-white leading-tight mb-4">
-            Let&rsquo;s Make Your Event Legendary.
-          </h2>
-          <p className="font-poppins text-sm sm:text-base text-white/60 leading-relaxed">
-            Fill out the form below and our team will get back to you within 24
-            hours with availability and a custom quote for your event.
-          </p>
-        </div>
-
-        <form
-          noValidate
-          aria-label="Event inquiry form"
-          className="flex flex-col gap-5"
-        >
-          {/* Row 1 — Name + Email */}
-          <div className="grid sm:grid-cols-2 gap-5">
+    <section id="contact" className="bg-[#0A0A0A] py-24 px-6 sm:px-10 lg:px-16">
+      {/* Dark card with green left border */}
+      <div className="max-w-6xl mx-auto rounded-2xl overflow-hidden border border-white/6 border-l-[3px] border-l-[#39FF14] bg-[#111111]">
+        <div className="grid lg:grid-cols-[42fr_58fr]">
+          {/* Left — heading + contact info */}
+          <div className="flex flex-col justify-between p-8 sm:p-12 lg:p-14 bg-[#0F0F0F] border-b lg:border-b-0 lg:border-r border-white/5">
             <div>
-              <label htmlFor="full-name" className={labelClass}>
-                Full Name
-              </label>
-              <input
-                id="full-name"
-                name="fullName"
-                type="text"
-                autoComplete="name"
-                placeholder="Juan dela Cruz"
-                className={inputClass}
-              />
+              <div className="flex items-center gap-3 mb-6">
+                <span className="inline-block w-6 h-[2px] bg-[#39FF14]" />
+                <span className="font-outfit text-[11px] font-semibold tracking-[0.2em] uppercase text-[#39FF14]">
+                  Book Your Bar
+                </span>
+              </div>
+
+              <h2 className="font-bebas text-[clamp(1.8rem,3.5vw,2.7rem)] text-white leading-[1.1] mb-5">
+                Let&apos;s Make Your
+                <br />
+                <span className="text-[#39FF14]">Event Legendary.</span>
+              </h2>
+
+              <p className="font-outfit text-[14px] text-white/50 leading-[1.75] mb-10">
+                Fill out the form and our team will get back to you within 24
+                hours with availability and a custom quote tailored to your event.
+              </p>
             </div>
-            <div>
-              <label htmlFor="email" className={labelClass}>
-                Email
-              </label>
-              <input
-                id="email"
-                name="email"
-                type="email"
-                autoComplete="email"
-                placeholder="juan@example.com"
-                className={inputClass}
-              />
-            </div>
-          </div>
 
-          {/* Row 2 — Phone + Event Date */}
-          <div className="grid sm:grid-cols-2 gap-5">
-            <div>
-              <label htmlFor="phone" className={labelClass}>
-                Phone
-              </label>
-              <input
-                id="phone"
-                name="phone"
-                type="tel"
-                autoComplete="tel"
-                placeholder="+63 9XX XXX XXXX"
-                className={inputClass}
-              />
-            </div>
-            <div>
-              <label htmlFor="event-date" className={labelClass}>
-                Event Date
-              </label>
-              <input
-                id="event-date"
-                name="eventDate"
-                type="date"
-                className={inputClass}
-                style={{ colorScheme: "dark" }}
-              />
-            </div>
-          </div>
-
-          {/* Row 3 — Event Type + Preferred Package */}
-          <div className="grid sm:grid-cols-2 gap-5">
-            <div className="relative">
-              <label htmlFor="event-type" className={labelClass}>
-                Event Type
-              </label>
-              <select id="event-type" name="eventType" className={selectClass}>
-                <option value="" disabled selected>
-                  Select event type
-                </option>
-                <option value="wedding">Wedding</option>
-                <option value="debut">Debut</option>
-                <option value="corporate">Corporate Event</option>
-                <option value="christmas">Christmas Party</option>
-                <option value="yacht">Yacht Party</option>
-                <option value="fiesta">Fiesta</option>
-                <option value="other">Other</option>
-              </select>
-              {/* Chevron */}
-              <div
-                aria-hidden="true"
-                className="pointer-events-none absolute right-4 bottom-3.5 border-l-4 border-r-4 border-t-4 border-l-transparent border-r-transparent border-t-[#39FF14]/60"
-              />
-            </div>
-            <div className="relative">
-              <label htmlFor="preferred-package" className={labelClass}>
-                Preferred Package
-              </label>
-              <select
-                id="preferred-package"
-                name="preferredPackage"
-                className={selectClass}
-              >
-                <option value="" disabled selected>
-                  Select a package
-                </option>
-                <option value="shooters">Shooters &amp; Cocktail Bar — P12,500</option>
-                <option value="slushie">Cocktail Slushie Bar — P20,000</option>
-                <option value="sangria">Sangria Bar — P25,000</option>
-                <option value="premium">Premium Bar — P30,000</option>
-              </select>
-              {/* Chevron */}
-              <div
-                aria-hidden="true"
-                className="pointer-events-none absolute right-4 bottom-3.5 border-l-4 border-r-4 border-t-4 border-l-transparent border-r-transparent border-t-[#39FF14]/60"
-              />
-            </div>
-          </div>
-
-          {/* Row 4 — Guest Count */}
-          <div>
-            <label htmlFor="guest-count" className={labelClass}>
-              Estimated Guest Count
-            </label>
-            <input
-              id="guest-count"
-              name="guestCount"
-              type="number"
-              min="1"
-              placeholder="e.g. 150"
-              className={inputClass}
-            />
-          </div>
-
-          {/* Row 5 — Additional Details */}
-          <div>
-            <label htmlFor="details" className={labelClass}>
-              Additional Details
-            </label>
-            <textarea
-              id="details"
-              name="details"
-              rows={4}
-              placeholder="Tell us about your event — venue, theme, special requests..."
-              className={`${inputClass} resize-none`}
-            />
-          </div>
-
-          {/* Submit */}
-          <div className="pt-2">
-            <button
-              type="submit"
-              className="w-full sm:w-auto inline-flex items-center justify-center h-12 px-10 rounded-full bg-[#39FF14] text-[#0A0A0A] font-poppins font-semibold text-sm hover:brightness-110 active:scale-95 transition-all duration-200"
-            >
-              Send Inquiry
-            </button>
-          </div>
-        </form>
-      </div>
-    </section>
-  );
-}
-
-// ─── Footer ──────────────────────────────────────────────────────────────────
-
-function Footer() {
-  return (
-    <footer className="bg-[#111111] border-t border-white/5 pt-14 pb-8 px-5 sm:px-8">
-      <div className="max-w-7xl mx-auto">
-        {/* Top grid */}
-        <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-10 mb-12">
-          {/* Brand */}
-          <div>
-            <div className="font-righteous text-2xl tracking-widest text-[#39FF14] mb-3">
-              SOBER CLUB
-            </div>
-            <p className="font-poppins text-sm text-white/50 leading-relaxed max-w-xs">
-              It&rsquo;s never a party unless we&rsquo;re there. Quezon City&rsquo;s
-              premier mobile bar service since 2005.
-            </p>
-          </div>
-
-          {/* Contact */}
-          <div>
-            <h3 className="font-poppins text-xs font-semibold text-white/40 uppercase tracking-widest mb-5">
-              Contact Us
-            </h3>
-            <ul className="flex flex-col gap-3">
+            {/* Contact details */}
+            <ul className="flex flex-col gap-5">
               <li>
                 <a
                   href="tel:+639171234567"
-                  className="flex items-center gap-3 font-poppins text-sm text-white/60 hover:text-[#39FF14] transition-colors duration-200"
+                  className="flex items-center gap-3.5 group"
                 >
-                  <Phone size={15} strokeWidth={1.8} className="flex-shrink-0" />
-                  +63 917 123 4567
+                  <span className="flex-shrink-0 w-9 h-9 rounded-full bg-[#39FF14]/8 border border-[#39FF14]/20 flex items-center justify-center text-[#39FF14] group-hover:bg-[#39FF14]/15 transition-colors duration-200">
+                    <Phone size={14} strokeWidth={1.8} />
+                  </span>
+                  <span className="font-outfit text-[13px] text-white/55 group-hover:text-[#39FF14] transition-colors duration-200">
+                    +63 917 123 4567
+                  </span>
                 </a>
               </li>
               <li>
                 <a
                   href="mailto:hello@soberclub.ph"
-                  className="flex items-center gap-3 font-poppins text-sm text-white/60 hover:text-[#39FF14] transition-colors duration-200"
+                  className="flex items-center gap-3.5 group"
                 >
-                  <Mail size={15} strokeWidth={1.8} className="flex-shrink-0" />
-                  hello@soberclub.ph
+                  <span className="flex-shrink-0 w-9 h-9 rounded-full bg-[#39FF14]/8 border border-[#39FF14]/20 flex items-center justify-center text-[#39FF14] group-hover:bg-[#39FF14]/15 transition-colors duration-200">
+                    <Mail size={14} strokeWidth={1.8} />
+                  </span>
+                  <span className="font-outfit text-[13px] text-white/55 group-hover:text-[#39FF14] transition-colors duration-200">
+                    hello@soberclub.ph
+                  </span>
                 </a>
               </li>
-              <li>
-                <span className="flex items-start gap-3 font-poppins text-sm text-white/60">
-                  <MapPin
-                    size={15}
-                    strokeWidth={1.8}
-                    className="flex-shrink-0 mt-0.5"
-                  />
-                  Quezon City, Metro Manila, Philippines
+              <li className="flex items-start gap-3.5">
+                <span className="flex-shrink-0 w-9 h-9 rounded-full bg-[#39FF14]/8 border border-[#39FF14]/20 flex items-center justify-center text-[#39FF14]">
+                  <MapPin size={14} strokeWidth={1.8} />
+                </span>
+                <span className="font-outfit text-[13px] text-white/50 leading-relaxed pt-1.5">
+                  Quezon City, Metro Manila
+                  <br />Philippines
                 </span>
               </li>
             </ul>
           </div>
 
-          {/* Social */}
-          <div>
-            <h3 className="font-poppins text-xs font-semibold text-white/40 uppercase tracking-widest mb-5">
-              Follow Us
-            </h3>
-            <div className="flex gap-3">
-              <a
-                href="https://facebook.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Sober Club on Facebook"
-                className="w-10 h-10 rounded-full bg-[#1A1A1A] border border-white/8 flex items-center justify-center text-white/50 hover:text-[#39FF14] hover:border-[#39FF14]/30 transition-colors duration-200"
-              >
-                <FacebookIcon size={16} strokeWidth={1.8} />
-              </a>
-              <a
-                href="https://instagram.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Sober Club on Instagram"
-                className="w-10 h-10 rounded-full bg-[#1A1A1A] border border-white/8 flex items-center justify-center text-white/50 hover:text-[#FF6B00] hover:border-[#FF6B00]/30 transition-colors duration-200"
-              >
-                <InstagramIcon size={16} strokeWidth={1.8} />
-              </a>
-            </div>
+          {/* Right — form fields */}
+          <div className="p-8 sm:p-12 lg:p-14">
+            <form
+              noValidate
+              aria-label="Event inquiry form"
+              className="flex flex-col gap-5"
+            >
+              {/* Row 1 */}
+              <div className="grid sm:grid-cols-2 gap-4">
+                <div>
+                  <label htmlFor="neon-full-name" className={labelClass}>
+                    Full Name
+                  </label>
+                  <input
+                    id="neon-full-name"
+                    name="fullName"
+                    type="text"
+                    autoComplete="name"
+                    placeholder="Juan dela Cruz"
+                    className={inputClass}
+                  />
+                </div>
+                <div>
+                  <label htmlFor="neon-email" className={labelClass}>
+                    Email
+                  </label>
+                  <input
+                    id="neon-email"
+                    name="email"
+                    type="email"
+                    autoComplete="email"
+                    placeholder="juan@example.com"
+                    className={inputClass}
+                  />
+                </div>
+              </div>
+
+              {/* Row 2 */}
+              <div className="grid sm:grid-cols-2 gap-4">
+                <div>
+                  <label htmlFor="neon-phone" className={labelClass}>
+                    Phone
+                  </label>
+                  <input
+                    id="neon-phone"
+                    name="phone"
+                    type="tel"
+                    autoComplete="tel"
+                    placeholder="+63 9XX XXX XXXX"
+                    className={inputClass}
+                  />
+                </div>
+                <div>
+                  <label htmlFor="neon-event-date" className={labelClass}>
+                    Event Date
+                  </label>
+                  <input
+                    id="neon-event-date"
+                    name="eventDate"
+                    type="date"
+                    className={inputClass}
+                    style={{ colorScheme: "dark" }}
+                  />
+                </div>
+              </div>
+
+              {/* Row 3 */}
+              <div className="grid sm:grid-cols-2 gap-4">
+                <div className="relative">
+                  <label htmlFor="neon-event-type" className={labelClass}>
+                    Event Type
+                  </label>
+                  <select
+                    id="neon-event-type"
+                    name="eventType"
+                    className={selectClass}
+                  >
+                    <option value="">Select event type</option>
+                    <option value="wedding">Wedding</option>
+                    <option value="debut">Debut</option>
+                    <option value="corporate">Corporate Event</option>
+                    <option value="christmas">Christmas Party</option>
+                    <option value="yacht">Yacht Party</option>
+                    <option value="fiesta">Fiesta</option>
+                    <option value="product-launch">Product Launch</option>
+                    <option value="birthday">Birthday Party</option>
+                    <option value="other">Other</option>
+                  </select>
+                  <div
+                    aria-hidden="true"
+                    className="pointer-events-none absolute right-4 bottom-[14px] border-l-[5px] border-r-[5px] border-t-[5px] border-l-transparent border-r-transparent border-t-[#39FF14]/50"
+                  />
+                </div>
+                <div className="relative">
+                  <label htmlFor="neon-package" className={labelClass}>
+                    Preferred Package
+                  </label>
+                  <select
+                    id="neon-package"
+                    name="preferredPackage"
+                    className={selectClass}
+                  >
+                    <option value="">Select a package</option>
+                    <option value="shooters">Shooters &amp; Cocktail Bar &mdash; P12,500</option>
+                    <option value="slushie">Cocktail Slushie Bar &mdash; P20,000</option>
+                    <option value="sangria">Sangria Bar &mdash; P25,000</option>
+                    <option value="premium">Premium Bar &mdash; P30,000</option>
+                  </select>
+                  <div
+                    aria-hidden="true"
+                    className="pointer-events-none absolute right-4 bottom-[14px] border-l-[5px] border-r-[5px] border-t-[5px] border-l-transparent border-r-transparent border-t-[#39FF14]/50"
+                  />
+                </div>
+              </div>
+
+              {/* Row 4 */}
+              <div>
+                <label htmlFor="neon-guests" className={labelClass}>
+                  Estimated Guest Count
+                </label>
+                <input
+                  id="neon-guests"
+                  name="guestCount"
+                  type="number"
+                  min="1"
+                  placeholder="e.g. 150"
+                  className={inputClass}
+                />
+              </div>
+
+              {/* Row 5 */}
+              <div>
+                <label htmlFor="neon-details" className={labelClass}>
+                  Additional Details
+                </label>
+                <textarea
+                  id="neon-details"
+                  name="details"
+                  rows={4}
+                  placeholder="Tell us about your event — venue, theme, special requests..."
+                  className={`${inputClass} resize-none`}
+                />
+              </div>
+
+              {/* Submit */}
+              <div className="pt-1">
+                <button
+                  type="submit"
+                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 h-[52px] px-10 rounded-full bg-[#39FF14] text-[#0A0A0A] font-outfit font-semibold text-[14px] hover:brightness-110 active:scale-[0.97] transition-all duration-200 shadow-[0_0_28px_rgba(57,255,20,0.25)]"
+                >
+                  Send Inquiry
+                  <ArrowRight size={15} strokeWidth={2.4} />
+                </button>
+              </div>
+            </form>
           </div>
         </div>
+      </div>
+    </section>
+  );
+}
 
-        {/* Divider */}
-        <div className="w-full h-px bg-white/5 mb-6" />
+// ─── Footer — minimal single-line ────────────────────────────────────────────
 
-        {/* Copyright */}
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
-          <p className="font-poppins text-xs text-white/30 text-center sm:text-left">
-            &copy; {new Date().getFullYear()} Sober Club. All rights reserved.
-          </p>
-          <p className="font-poppins text-xs text-white/20 text-center sm:text-right">
-            Mobile Bar Services &mdash; Quezon City, Philippines
-          </p>
+function Footer() {
+  return (
+    <footer className="bg-[#0A0A0A] border-t border-white/5">
+      <div className="max-w-none px-6 sm:px-10 lg:px-16 h-[60px] flex items-center justify-between gap-4">
+        {/* Logo — left */}
+        <a
+          href="#"
+          aria-label="Sober Club home"
+          className="font-bebas text-[13px] tracking-[0.22em] text-white/40 hover:text-[#39FF14] transition-colors duration-200 uppercase whitespace-nowrap flex-shrink-0"
+        >
+          Sober Club
+        </a>
+
+        {/* Social icons — center */}
+        <div className="flex items-center gap-4 mx-auto">
+          <a
+            href="https://facebook.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Sober Club on Facebook"
+            className="text-white/30 hover:text-[#39FF14] transition-colors duration-200"
+          >
+            <FacebookIcon size={15} strokeWidth={1.8} />
+          </a>
+          <span className="inline-block w-px h-3 bg-white/10" />
+          <a
+            href="https://instagram.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Sober Club on Instagram"
+            className="text-white/30 hover:text-[#FF6B00] transition-colors duration-200"
+          >
+            <InstagramIcon size={15} strokeWidth={1.8} />
+          </a>
         </div>
+
+        {/* Copyright — right */}
+        <p className="font-outfit text-[11px] text-white/25 whitespace-nowrap flex-shrink-0">
+          &copy; {new Date().getFullYear()} Sober Club
+        </p>
       </div>
     </footer>
   );
 }
 
-// ─── Page Root ───────────────────────────────────────────────────────────────
+// ─── Page root ────────────────────────────────────────────────────────────────
 
 export default function NeonNightlife() {
   return (
-    <div className="min-h-screen bg-[#0A0A0A] font-poppins">
+    <div className="min-h-screen bg-[#0A0A0A] font-outfit">
+      <GlobalStyles />
       <Header />
-
-      {/* Push content below fixed header */}
-      <div className="pt-16">
+      <main>
         <Hero />
-        <StatsBar />
         <About />
         <Packages />
         <Gallery />
         <Testimonials />
         <InquiryForm />
-        <Footer />
-      </div>
+      </main>
+      <Footer />
     </div>
   );
 }

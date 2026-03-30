@@ -3,6 +3,45 @@
 import Image from "next/image";
 import { useState } from "react";
 import { Menu, X, Phone, Mail, MapPin } from "lucide-react";
+import { images } from "@/lib/images";
+
+// ---------------------------------------------------------------------------
+// Inline SVG icons (Facebook & Instagram — not in lucide-react)
+// ---------------------------------------------------------------------------
+
+function IconFacebook({ size = 18 }: { size?: number }) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      aria-hidden="true"
+    >
+      <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
+    </svg>
+  );
+}
+
+function IconInstagram({ size = 18 }: { size?: number }) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+      <circle cx="12" cy="12" r="4" />
+      <circle cx="17.5" cy="6.5" r="0.01" fill="currentColor" strokeWidth="3" />
+    </svg>
+  );
+}
 
 // ---------------------------------------------------------------------------
 // Types
@@ -13,13 +52,20 @@ interface Package {
   tagline: string;
   price: string;
   features: string[];
-  inverted?: boolean;
+  isPremium?: boolean;
   badge?: string;
+  imageKey: keyof typeof images;
 }
 
 interface Stat {
   value: string;
   label: string;
+}
+
+interface Testimonial {
+  quote: string;
+  author: string;
+  role: string;
 }
 
 // ---------------------------------------------------------------------------
@@ -43,6 +89,7 @@ const packages: Package[] = [
       "Signature cocktail menu",
       "Up to 4 hours of service",
     ],
+    imageKey: "gallery1",
   },
   {
     name: "Cocktail Slushie Bar",
@@ -54,6 +101,7 @@ const packages: Package[] = [
       "All-inclusive mixers",
       "Up to 5 hours of service",
     ],
+    imageKey: "gallery2",
   },
   {
     name: "Sangria Bar",
@@ -65,6 +113,7 @@ const packages: Package[] = [
       "Seasonal fruit garnishes",
       "Up to 5 hours of service",
     ],
+    imageKey: "gallery3",
   },
   {
     name: "Premium Bar",
@@ -76,19 +125,36 @@ const packages: Package[] = [
       "Dedicated event manager",
       "Unlimited hours of service",
     ],
-    inverted: true,
+    isPremium: true,
     badge: "SIGNATURE",
+    imageKey: "gallery4",
   },
 ];
 
-const galleryImages = [
-  { src: "/images/gallery-1.jpg", alt: "Elegant bar setup at a gala" },
-  { src: "/images/gallery-2.jpg", alt: "Handcrafted cocktail close-up" },
-  { src: "/images/gallery-3.jpg", alt: "Bartender at work during a wedding" },
-  { src: "/images/gallery-4.jpg", alt: "Premium glassware arrangement" },
+const testimonials: Testimonial[] = [
+  {
+    quote:
+      "Sober Club transformed our wedding reception into something truly unforgettable. The bar was as beautiful as it was expertly run — every guest was talking about it.",
+    author: "Camille & Rafael Santos",
+    role: "Wedding at Shangri-La BGC",
+  },
+  {
+    quote:
+      "Our annual gala has never looked or felt better. The team arrived fully prepared, and the custom cocktail menu was an absolute masterpiece.",
+    author: "Ana Reyes",
+    role: "Events Director, Fortune 500 Company",
+  },
 ];
 
 const eventTypes = [
+  "Wedding",
+  "Gala",
+  "Corporate",
+  "Private",
+  "Yacht",
+];
+
+const formEventTypes = [
   "Wedding",
   "Corporate Gala",
   "Private Party",
@@ -112,7 +178,7 @@ const preferredPackages = [
 function SectionLabel({ children }: { children: React.ReactNode }) {
   return (
     <span
-      className="font-dm text-xs tracking-[3px] uppercase"
+      className="font-dm text-[10px] tracking-[4px] uppercase"
       style={{ color: "#D4AF37" }}
     >
       {children}
@@ -120,11 +186,15 @@ function SectionLabel({ children }: { children: React.ReactNode }) {
   );
 }
 
-function Divider() {
+function GoldRule({ width = "60px" }: { width?: string }) {
   return (
     <div
-      className="w-10 h-px mt-3 mb-6"
-      style={{ backgroundColor: "#D4AF37" }}
+      className="mx-auto"
+      style={{
+        width,
+        height: "1px",
+        backgroundColor: "#D4AF37",
+      }}
     />
   );
 }
@@ -135,6 +205,7 @@ function Divider() {
 
 export default function PremiumElegance() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [activeTestimonial, setActiveTestimonial] = useState(0);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -167,12 +238,16 @@ export default function PremiumElegance() {
     { label: "Contact", href: "#contact" },
   ];
 
-  // Shared input / select style
+  // Bottom-border-only field style
   const fieldBase: React.CSSProperties = {
-    backgroundColor: "#221E18",
+    backgroundColor: "transparent",
     color: "#F5F0E8",
-    borderColor: "#3A3428",
-    borderRadius: "6px",
+    borderBottom: "1px solid #3A3428",
+    borderTop: "none",
+    borderLeft: "none",
+    borderRight: "none",
+    borderRadius: 0,
+    outline: "none",
   };
 
   return (
@@ -181,59 +256,75 @@ export default function PremiumElegance() {
       style={{ backgroundColor: "#1A1714", color: "#F5F0E8" }}
     >
       {/* ------------------------------------------------------------------ */}
-      {/* HEADER                                                              */}
+      {/* HEADER — two-row editorial layout                                   */}
       {/* ------------------------------------------------------------------ */}
       <header
-        className="fixed top-0 left-0 right-0 z-50 px-6 py-4 flex items-center justify-between"
-        style={{ backgroundColor: "rgba(26, 23, 20, 0.92)", backdropFilter: "blur(12px)" }}
+        className="fixed top-0 left-0 right-0 z-50"
+        style={{
+          backgroundColor: "rgba(17, 14, 10, 0.96)",
+          backdropFilter: "blur(14px)",
+          borderBottom: "1px solid rgba(212,175,55,0.1)",
+        }}
       >
-        {/* Logo */}
-        <a href="#hero" className="flex items-center gap-2 select-none">
-          <span
-            className="font-playfair text-lg font-semibold tracking-[2px] uppercase"
-            style={{ color: "#D4AF37" }}
+        {/* Row 1: centered logo */}
+        <div className="hidden md:flex items-center justify-center px-8 pt-5 pb-3">
+          <a
+            href="#hero"
+            className="select-none text-center"
+            aria-label="Sober Club — home"
           >
-            Sober Club
-          </span>
-        </a>
+            <span
+              className="font-playfair font-semibold tracking-[4px] uppercase"
+              style={{ fontSize: "1.45rem", color: "#D4AF37" }}
+            >
+              Sober Club
+            </span>
+          </a>
+        </div>
 
-        {/* Desktop nav */}
-        <nav className="hidden md:flex items-center gap-8">
+        {/* Row 2: centered nav links + Reserve CTA */}
+        <div
+          className="hidden md:flex items-center justify-center gap-10 pb-4"
+          style={{ borderTop: "1px solid rgba(212,175,55,0.08)" }}
+        >
           {navLinks.map((link) => (
             <a
               key={link.href}
               href={link.href}
-              className="font-dm text-sm tracking-wide transition-colors duration-200"
+              className="font-dm text-[11px] tracking-[2px] uppercase transition-colors duration-200"
               style={{ color: "#9A8E7E" }}
-              onMouseEnter={(e) =>
-                (e.currentTarget.style.color = "#F5F0E8")
-              }
-              onMouseLeave={(e) =>
-                (e.currentTarget.style.color = "#9A8E7E")
-              }
+              onMouseEnter={(e) => (e.currentTarget.style.color = "#F5F0E8")}
+              onMouseLeave={(e) => (e.currentTarget.style.color = "#9A8E7E")}
             >
               {link.label}
             </a>
           ))}
-        </nav>
-
-        {/* Book Now CTA */}
-        <div className="flex items-center gap-4">
           <a
             href="#contact"
-            className="hidden md:inline-flex items-center px-5 py-2.5 font-dm text-sm font-medium tracking-wide transition-opacity duration-200 hover:opacity-85"
+            className="font-dm text-[11px] tracking-[2px] uppercase px-5 py-2 transition-opacity duration-200 hover:opacity-80"
             style={{
               backgroundColor: "#D4AF37",
               color: "#110E0A",
               borderRadius: "4px",
+              fontWeight: 500,
             }}
           >
-            Book Now
+            Reserve
           </a>
+        </div>
 
-          {/* Mobile menu toggle */}
+        {/* Mobile header: centered logo + hamburger */}
+        <div className="md:hidden flex items-center justify-between px-6 py-4">
+          <a href="#hero" className="select-none" aria-label="Sober Club — home">
+            <span
+              className="font-playfair font-semibold tracking-[3px] uppercase"
+              style={{ fontSize: "1.1rem", color: "#D4AF37" }}
+            >
+              Sober Club
+            </span>
+          </a>
           <button
-            className="md:hidden p-1"
+            className="p-1"
             style={{ color: "#F5F0E8" }}
             aria-label={menuOpen ? "Close menu" : "Open menu"}
             onClick={() => setMenuOpen((v) => !v)}
@@ -246,15 +337,15 @@ export default function PremiumElegance() {
       {/* Mobile nav drawer */}
       {menuOpen && (
         <div
-          className="fixed inset-0 z-40 flex flex-col pt-20 px-6 pb-8 md:hidden"
+          className="fixed inset-0 z-40 flex flex-col pt-20 px-8 pb-10 md:hidden"
           style={{ backgroundColor: "#110E0A" }}
         >
-          <nav className="flex flex-col gap-6 mt-4">
+          <nav className="flex flex-col gap-8 mt-6">
             {navLinks.map((link) => (
               <a
                 key={link.href}
                 href={link.href}
-                className="font-playfair text-2xl font-medium"
+                className="font-playfair text-3xl font-medium"
                 style={{ color: "#F5F0E8" }}
                 onClick={() => setMenuOpen(false)}
               >
@@ -264,7 +355,7 @@ export default function PremiumElegance() {
           </nav>
           <a
             href="#contact"
-            className="mt-auto inline-flex items-center justify-center px-6 py-3 font-dm text-sm font-medium tracking-wide"
+            className="mt-auto inline-flex items-center justify-center px-6 py-3.5 font-dm text-sm font-medium tracking-[2px] uppercase transition-opacity hover:opacity-80"
             style={{
               backgroundColor: "#D4AF37",
               color: "#110E0A",
@@ -272,145 +363,207 @@ export default function PremiumElegance() {
             }}
             onClick={() => setMenuOpen(false)}
           >
-            Book Now
+            Reserve Now
           </a>
         </div>
       )}
 
       {/* ------------------------------------------------------------------ */}
-      {/* HERO                                                                */}
+      {/* HERO — split 50/50                                                  */}
       {/* ------------------------------------------------------------------ */}
       <section
         id="hero"
-        className="relative min-h-screen flex items-center pt-20"
+        className="flex flex-col md:flex-row min-h-screen"
+        style={{ paddingTop: "0" }}
       >
-        {/* Background image */}
-        <div className="absolute inset-0">
+        {/* Mobile: image on top */}
+        <div
+          className="md:hidden w-full relative"
+          style={{ height: "300px" }}
+        >
           <Image
-            src="/images/hero-elegant.jpg"
+            src={images.heroElegant}
             alt="Elegant mobile bar setup"
             fill
             priority
             className="object-cover"
             sizes="100vw"
           />
-          {/* Multi-layer dark overlay */}
           <div
             className="absolute inset-0"
             style={{
               background:
-                "linear-gradient(135deg, rgba(17,14,10,0.88) 0%, rgba(26,23,20,0.70) 50%, rgba(17,14,10,0.82) 100%)",
+                "linear-gradient(to bottom, rgba(17,14,10,0.2), rgba(26,23,20,0.5))",
             }}
           />
         </div>
 
-        {/* Content */}
-        <div className="relative z-10 w-full max-w-6xl mx-auto px-6 lg:px-12 py-20">
-          {/* Badge */}
-          <div className="mb-8">
-            <span
-              className="inline-block font-dm text-xs tracking-[3px] uppercase px-4 py-2"
-              style={{
-                color: "#D4AF37",
-                backgroundColor: "rgba(212,175,55,0.12)",
-                border: "1px solid rgba(212,175,55,0.30)",
-                borderRadius: "4px",
-              }}
-            >
-              Est. 2004 · Quezon City
-            </span>
-          </div>
+        {/* Left — text content */}
+        <div
+          className="w-full md:w-1/2 flex items-center justify-end"
+          style={{
+            backgroundColor: "#1A1714",
+            paddingTop: "clamp(5rem, 14vw, 9rem)",
+            paddingBottom: "clamp(4rem, 10vw, 8rem)",
+          }}
+        >
+          <div className="w-full max-w-lg px-8 md:px-12 lg:px-16">
+            {/* Est. badge */}
+            <div className="mb-8">
+              <span
+                className="font-dm text-[10px] tracking-[3px] uppercase px-3 py-1.5"
+                style={{
+                  color: "#D4AF37",
+                  backgroundColor: "rgba(212,175,55,0.10)",
+                  border: "1px solid rgba(212,175,55,0.25)",
+                  borderRadius: "4px",
+                }}
+              >
+                Est. 2004 &middot; Quezon City
+              </span>
+            </div>
 
-          {/* Headline */}
-          <h1
-            className="font-playfair font-semibold leading-[1.05] mb-6"
-            style={{ fontSize: "clamp(2.5rem, 7vw, 5rem)", color: "#F5F0E8" }}
-          >
-            Elevate
-            <br />
-            Your
-            <br />
-            <span style={{ color: "#D4AF37" }}>Celebration.</span>
-          </h1>
-
-          {/* Subheadline */}
-          <p
-            className="font-dm text-base md:text-lg leading-relaxed max-w-md mb-10"
-            style={{ color: "#9A8E7E" }}
-          >
-            Bespoke mobile bar experiences crafted for weddings, galas, and
-            private events across Metro Manila. Every pour, perfected.
-          </p>
-
-          {/* CTAs */}
-          <div className="flex flex-col sm:flex-row gap-4">
-            <a
-              href="#contact"
-              className="inline-flex items-center justify-center px-8 py-3.5 font-dm text-sm font-medium tracking-wide transition-opacity duration-200 hover:opacity-85"
-              style={{
-                backgroundColor: "#D4AF37",
-                color: "#110E0A",
-                borderRadius: "4px",
-              }}
+            {/* Heading */}
+            <h1
+              className="font-playfair font-semibold leading-[1.05] mb-6"
+              style={{ fontSize: "clamp(2.6rem, 5.5vw, 4.25rem)", color: "#F5F0E8" }}
             >
-              Reserve Now
-            </a>
-            <a
-              href="#packages"
-              className="inline-flex items-center justify-center px-8 py-3.5 font-dm text-sm font-medium tracking-wide transition-opacity duration-200 hover:opacity-85"
-              style={{
-                backgroundColor: "#221E18",
-                color: "#D4AF37",
-                border: "1px solid rgba(212,175,55,0.35)",
-                borderRadius: "4px",
-              }}
+              Elevate Your
+              <br />
+              <em style={{ color: "#D4AF37", fontStyle: "italic" }}>
+                Celebration
+              </em>
+            </h1>
+
+            {/* Gold rule */}
+            <div className="mb-6" style={{ marginLeft: "0" }}>
+              <div style={{ width: "60px", height: "1px", backgroundColor: "#D4AF37" }} />
+            </div>
+
+            {/* Subheadline */}
+            <p
+              className="font-dm text-base md:text-[1.05rem] leading-[1.8] mb-10"
+              style={{ color: "#9A8E7E", maxWidth: "420px" }}
             >
-              Our Packages
-            </a>
+              Bespoke mobile bar experiences crafted for weddings, galas, and
+              private events across Metro Manila. Every pour, perfected.
+            </p>
+
+            {/* CTAs */}
+            <div className="flex flex-col sm:flex-row gap-4">
+              <a
+                href="#contact"
+                className="inline-flex items-center justify-center px-8 py-3.5 font-dm text-[12px] font-medium tracking-[2px] uppercase transition-opacity duration-200 hover:opacity-80"
+                style={{
+                  backgroundColor: "#D4AF37",
+                  color: "#110E0A",
+                  borderRadius: "4px",
+                }}
+              >
+                Reserve Now
+              </a>
+              <a
+                href="#packages"
+                className="inline-flex items-center justify-center px-8 py-3.5 font-dm text-[12px] font-medium tracking-[2px] uppercase transition-opacity duration-200 hover:opacity-80"
+                style={{
+                  color: "#D4AF37",
+                  border: "1px solid rgba(212,175,55,0.35)",
+                  borderRadius: "4px",
+                }}
+              >
+                Our Packages
+              </a>
+            </div>
+
+            {/* Scroll hint — desktop only */}
+            <div className="hidden md:flex items-center gap-3 mt-16">
+              <div
+                style={{
+                  width: "1px",
+                  height: "40px",
+                  background:
+                    "linear-gradient(to bottom, rgba(212,175,55,0.6), transparent)",
+                }}
+              />
+              <span
+                className="font-dm text-[10px] tracking-[2px] uppercase"
+                style={{ color: "#8A7E6E" }}
+              >
+                Scroll
+              </span>
+            </div>
           </div>
         </div>
 
-        {/* Scroll indicator */}
-        <div
-          className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
-          style={{ color: "#8A7E6E" }}
-        >
-          <span className="font-dm text-xs tracking-[2px] uppercase">Scroll</span>
+        {/* Right — hero image (desktop only) */}
+        <div className="hidden md:block w-1/2 relative" style={{ minHeight: "100vh" }}>
+          <Image
+            src={images.heroElegant}
+            alt="Elegant mobile bar setup"
+            fill
+            priority
+            className="object-cover"
+            sizes="50vw"
+            style={{ borderRadius: "0" }}
+          />
+          {/* Subtle left-edge fade */}
           <div
-            className="w-px h-10"
+            className="absolute inset-y-0 left-0 w-24"
             style={{
               background:
-                "linear-gradient(to bottom, rgba(212,175,55,0.6), transparent)",
+                "linear-gradient(to right, #1A1714, transparent)",
             }}
           />
         </div>
       </section>
 
       {/* ------------------------------------------------------------------ */}
-      {/* STATS BAR                                                           */}
+      {/* STATS — centered single row with gold vertical dividers             */}
       {/* ------------------------------------------------------------------ */}
-      <section style={{ backgroundColor: "#221E18" }}>
-        <div className="max-w-6xl mx-auto px-6 lg:px-12 py-12">
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 sm:gap-0 divide-y sm:divide-y-0 sm:divide-x"
-            style={{ borderColor: "#3A3428" }}
-          >
-            {stats.map((stat) => (
-              <div
-                key={stat.label}
-                className="flex flex-col items-center text-center px-6 py-4 sm:py-0 first:pt-0 last:pb-0 sm:first:pt-0 sm:last:pb-0"
-              >
-                <span
-                  className="font-playfair font-semibold leading-none mb-2"
-                  style={{ fontSize: "clamp(2rem, 5vw, 3rem)", color: "#D4AF37" }}
-                >
-                  {stat.value}
-                </span>
-                <span
-                  className="font-dm text-xs tracking-[2px] uppercase"
-                  style={{ color: "#8A7E6E" }}
-                >
-                  {stat.label}
-                </span>
+      <section
+        id="stats"
+        style={{ backgroundColor: "#1A1714" }}
+      >
+        <div className="max-w-4xl mx-auto px-6 py-20">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-0">
+            {stats.map((stat, index) => (
+              <div key={stat.label} className="flex items-center">
+                <div className="flex flex-col items-center text-center px-10 md:px-16 py-8 sm:py-0">
+                  <span
+                    className="font-playfair font-semibold leading-none mb-3"
+                    style={{ fontSize: "clamp(2.4rem, 5vw, 3.5rem)", color: "#D4AF37" }}
+                  >
+                    {stat.value}
+                  </span>
+                  <span
+                    className="font-dm text-[10px] tracking-[3px] uppercase"
+                    style={{ color: "#8A7E6E" }}
+                  >
+                    {stat.label}
+                  </span>
+                </div>
+                {/* Gold vertical divider between stats */}
+                {index < stats.length - 1 && (
+                  <div
+                    className="hidden sm:block flex-shrink-0"
+                    style={{
+                      width: "1px",
+                      height: "60px",
+                      backgroundColor: "rgba(212,175,55,0.35)",
+                    }}
+                  />
+                )}
+                {/* Mobile horizontal divider */}
+                {index < stats.length - 1 && (
+                  <div
+                    className="sm:hidden"
+                    style={{
+                      width: "40px",
+                      height: "1px",
+                      backgroundColor: "rgba(212,175,55,0.25)",
+                    }}
+                  />
+                )}
               </div>
             ))}
           </div>
@@ -418,340 +571,465 @@ export default function PremiumElegance() {
       </section>
 
       {/* ------------------------------------------------------------------ */}
-      {/* ABOUT                                                               */}
+      {/* ABOUT — centered narrow column                                      */}
       {/* ------------------------------------------------------------------ */}
-      <section id="about" className="py-20 lg:py-28">
-        <div className="max-w-6xl mx-auto px-6 lg:px-12">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-            {/* Text */}
-            <div>
-              <SectionLabel>The Experience</SectionLabel>
-              <Divider />
-              <h2
-                className="font-playfair font-semibold leading-tight mb-6"
-                style={{ fontSize: "clamp(1.75rem, 4vw, 2.75rem)", color: "#F5F0E8" }}
-              >
-                More Than
-                <br />
-                <span style={{ color: "#D4AF37" }}>Mixology.</span>
-              </h2>
-              <p
-                className="font-dm text-base leading-relaxed mb-5"
-                style={{ color: "#9A8E7E" }}
-              >
-                Since 2004, Sober Club has been redefining what a mobile bar
-                can be. We don&apos;t just serve drinks — we orchestrate an
-                experience that becomes an integral part of your event&apos;s story.
-              </p>
-              <p
-                className="font-dm text-base leading-relaxed mb-8"
-                style={{ color: "#9A8E7E" }}
-              >
-                Each setup is tailored to your venue, your guests, and your
-                vision. From intimate private dinners to grand gala evenings,
-                our bartenders bring theatrical craftsmanship and flawless
-                hospitality to every pour.
-              </p>
+      <section
+        id="about"
+        className="py-24 lg:py-32"
+        style={{ backgroundColor: "#110E0A" }}
+      >
+        <div className="max-w-2xl mx-auto px-6 text-center">
+          {/* Label */}
+          <SectionLabel>The Experience</SectionLabel>
 
-              {/* Event pills */}
-              <div className="flex flex-wrap gap-2">
-                {["Weddings", "Galas", "Corporate", "Private"].map((tag) => (
-                  <span
-                    key={tag}
-                    className="font-dm text-xs tracking-wide px-4 py-2"
-                    style={{
-                      backgroundColor: "#221E18",
-                      color: "#D4AF37",
-                      border: "1px solid rgba(212,175,55,0.25)",
-                      borderRadius: "4px",
-                    }}
-                  >
-                    {tag}
-                  </span>
-                ))}
-              </div>
-            </div>
+          {/* Heading */}
+          <h2
+            className="font-playfair font-semibold leading-tight mt-5 mb-6"
+            style={{ fontSize: "clamp(1.9rem, 4vw, 3rem)", color: "#F5F0E8" }}
+          >
+            More Than{" "}
+            <span style={{ color: "#D4AF37" }}>Mixology.</span>
+          </h2>
 
-            {/* Image */}
+          <GoldRule width="60px" />
+
+          {/* Body copy */}
+          <p
+            className="font-dm text-base leading-[1.9] mt-8 mb-5"
+            style={{ color: "#9A8E7E" }}
+          >
+            For over two decades, Sober Club has been the quiet force behind
+            Metro Manila&apos;s most memorable celebrations. We bring the
+            craft of the cocktail bar directly to your venue — fully equipped,
+            immaculately styled, and staffed by experts who understand that
+            every detail matters.
+          </p>
+          <p
+            className="font-dm text-base leading-[1.9] mb-12"
+            style={{ color: "#8A7E6E" }}
+          >
+            From intimate debuts to grand corporate galas, our service is
+            designed to feel effortless — because behind that effortlessness
+            is years of refined expertise. It&apos;s never a party unless we&apos;re there.
+          </p>
+
+          {/* About image */}
+          <div
+            className="w-full relative overflow-hidden"
+            style={{
+              height: "clamp(280px, 50vw, 460px)",
+              border: "1px solid rgba(212,175,55,0.25)",
+              borderRadius: "0",
+            }}
+          >
+            <Image
+              src={images.aboutElegant}
+              alt="Sober Club bartenders at an elegant event"
+              fill
+              className="object-cover"
+              sizes="(max-width: 768px) 100vw, 672px"
+            />
             <div
-              className="relative aspect-[4/5] w-full overflow-hidden"
-              style={{ borderRadius: "8px" }}
-            >
-              <Image
-                src="/images/about-elegant.jpg"
-                alt="Sober Club bartender at an elegant event"
-                fill
-                className="object-cover"
-                sizes="(max-width: 1024px) 100vw, 50vw"
-              />
-              {/* Subtle gold frame accent */}
-              <div
-                className="absolute inset-0 pointer-events-none"
-                style={{
-                  boxShadow: "inset 0 0 0 1px rgba(212,175,55,0.15)",
-                  borderRadius: "8px",
-                }}
-              />
-            </div>
+              className="absolute inset-0"
+              style={{
+                background:
+                  "linear-gradient(to top, rgba(17,14,10,0.4), transparent)",
+              }}
+            />
+          </div>
+
+          {/* Event types — inline text with gold dots */}
+          <div className="mt-8 flex items-center justify-center flex-wrap gap-x-0">
+            {eventTypes.map((type, index) => (
+              <span key={type} className="inline-flex items-center">
+                <span
+                  className="font-dm text-[11px] tracking-[2px] uppercase"
+                  style={{ color: "#9A8E7E" }}
+                >
+                  {type}
+                </span>
+                {index < eventTypes.length - 1 && (
+                  <span
+                    className="mx-3"
+                    style={{ color: "#D4AF37", fontSize: "0.6rem" }}
+                    aria-hidden="true"
+                  >
+                    &middot;
+                  </span>
+                )}
+              </span>
+            ))}
           </div>
         </div>
       </section>
 
       {/* ------------------------------------------------------------------ */}
-      {/* PACKAGES                                                            */}
+      {/* PACKAGES — stacked full-width horizontal cards                      */}
       {/* ------------------------------------------------------------------ */}
       <section
         id="packages"
-        className="py-20 lg:py-28"
-        style={{ backgroundColor: "#221E18" }}
+        className="py-24 lg:py-32"
+        style={{ backgroundColor: "#1A1714" }}
       >
-        <div className="max-w-6xl mx-auto px-6 lg:px-12">
-          {/* Header */}
-          <div className="text-center mb-14">
-            <SectionLabel>Curated Packages</SectionLabel>
-            <Divider />
+        <div className="max-w-5xl mx-auto px-6">
+          {/* Section header */}
+          <div className="text-center mb-16">
+            <SectionLabel>What We Offer</SectionLabel>
             <h2
-              className="font-playfair font-semibold leading-tight"
-              style={{ fontSize: "clamp(1.75rem, 4vw, 2.75rem)", color: "#F5F0E8" }}
+              className="font-playfair font-semibold leading-tight mt-5"
+              style={{ fontSize: "clamp(1.9rem, 4vw, 3rem)", color: "#F5F0E8" }}
             >
-              Select Your{" "}
-              <span style={{ color: "#D4AF37" }}>Experience.</span>
+              Our Bar Packages
             </h2>
           </div>
 
-          {/* Cards grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6">
-            {packages.map((pkg) => (
-              <div
-                key={pkg.name}
-                className="relative flex flex-col p-6 transition-transform duration-300 hover:-translate-y-1"
-                style={{
-                  backgroundColor: pkg.inverted ? "#D4AF37" : "#1A1714",
-                  borderRadius: "8px",
-                  border: pkg.inverted
-                    ? "none"
-                    : "1px solid rgba(212,175,55,0.15)",
-                }}
-              >
-                {/* Signature badge */}
-                {pkg.badge && (
-                  <div className="mb-4">
-                    <span
-                      className="font-dm text-xs tracking-[2px] uppercase px-3 py-1"
+          {/* Cards */}
+          <div className="flex flex-col">
+            {packages.map((pkg, index) => (
+              <div key={pkg.name}>
+                {/* Gold divider above each card */}
+                {index > 0 && (
+                  <div
+                    style={{ height: "1px", backgroundColor: "rgba(212,175,55,0.18)" }}
+                  />
+                )}
+
+                <div
+                  className="flex flex-col md:flex-row"
+                  style={{
+                    backgroundColor: pkg.isPremium ? "#221E18" : "transparent",
+                    borderTop: pkg.isPremium ? "3px solid #D4AF37" : undefined,
+                    padding: "clamp(1.5rem, 4vw, 2.5rem) 0",
+                  }}
+                >
+                  {/* Image placeholder */}
+                  <div
+                    className="w-full md:w-64 lg:w-80 flex-shrink-0 relative overflow-hidden"
+                    style={{
+                      height: "200px",
+                      borderRadius: "0",
+                      marginBottom: "1.5rem",
+                    }}
+                  >
+                    <Image
+                      src={images[pkg.imageKey]}
+                      alt={pkg.name}
+                      fill
+                      className="object-cover"
+                      sizes="(max-width: 768px) 100vw, 320px"
+                    />
+                    <div
+                      className="absolute inset-0"
                       style={{
-                        backgroundColor: "#110E0A",
-                        color: "#D4AF37",
-                        borderRadius: "4px",
+                        background:
+                          "linear-gradient(135deg, rgba(17,14,10,0.35), transparent)",
                       }}
-                    >
-                      {pkg.badge}
-                    </span>
+                    />
                   </div>
-                )}
 
-                {!pkg.badge && (
-                  <div className="mb-4 h-6" />
-                )}
-
-                {/* Package name */}
-                <h3
-                  className="font-playfair font-semibold text-lg leading-snug mb-1"
-                  style={{ color: pkg.inverted ? "#110E0A" : "#F5F0E8" }}
-                >
-                  {pkg.name}
-                </h3>
-
-                {/* Tagline */}
-                <p
-                  className="font-dm text-xs mb-4"
-                  style={{ color: pkg.inverted ? "rgba(17,14,10,0.65)" : "#8A7E6E" }}
-                >
-                  {pkg.tagline}
-                </p>
-
-                {/* Divider */}
-                <div
-                  className="w-8 h-px mb-5"
-                  style={{
-                    backgroundColor: pkg.inverted
-                      ? "rgba(17,14,10,0.30)"
-                      : "rgba(212,175,55,0.35)",
-                  }}
-                />
-
-                {/* Features */}
-                <ul className="flex flex-col gap-2 mb-6 flex-1">
-                  {pkg.features.map((feature) => (
-                    <li
-                      key={feature}
-                      className="font-dm text-sm flex items-start gap-2"
-                      style={{ color: pkg.inverted ? "#1A1714" : "#9A8E7E" }}
-                    >
+                  {/* Text content */}
+                  <div className="flex-1 md:pl-10 lg:pl-14 flex flex-col justify-center">
+                    <div className="flex items-start justify-between flex-wrap gap-3 mb-3">
+                      <div>
+                        {pkg.badge && (
+                          <span
+                            className="inline-block font-dm text-[9px] tracking-[3px] uppercase px-2.5 py-1 mb-3"
+                            style={{
+                              color: "#D4AF37",
+                              border: "1px solid rgba(212,175,55,0.4)",
+                              borderRadius: "4px",
+                            }}
+                          >
+                            {pkg.badge}
+                          </span>
+                        )}
+                        <h3
+                          className="font-playfair font-semibold leading-snug"
+                          style={{
+                            fontSize: "clamp(1.3rem, 3vw, 1.7rem)",
+                            color: pkg.isPremium ? "#D4AF37" : "#F5F0E8",
+                            display: "block",
+                          }}
+                        >
+                          {pkg.name}
+                        </h3>
+                        <p
+                          className="font-dm text-sm mt-1"
+                          style={{ color: "#8A7E6E", fontStyle: "italic" }}
+                        >
+                          {pkg.tagline}
+                        </p>
+                      </div>
                       <span
-                        className="mt-1.5 shrink-0 w-1 h-1 rounded-full"
-                        style={{
-                          backgroundColor: pkg.inverted
-                            ? "#1A1714"
-                            : "#D4AF37",
-                        }}
-                      />
-                      {feature}
-                    </li>
-                  ))}
-                </ul>
+                        className="font-playfair text-xl font-semibold flex-shrink-0"
+                        style={{ color: "#D4AF37" }}
+                      >
+                        {pkg.price}
+                      </span>
+                    </div>
 
-                {/* Price */}
-                <div
-                  className="font-playfair font-semibold text-xl mb-5"
-                  style={{ color: pkg.inverted ? "#110E0A" : "#D4AF37" }}
-                >
-                  {pkg.price}
+                    <ul className="mt-4 space-y-2">
+                      {pkg.features.map((feat) => (
+                        <li
+                          key={feat}
+                          className="flex items-center gap-3 font-dm text-sm"
+                          style={{ color: "#9A8E7E" }}
+                        >
+                          <span
+                            style={{
+                              width: "16px",
+                              height: "1px",
+                              backgroundColor: "#D4AF37",
+                              flexShrink: 0,
+                            }}
+                          />
+                          {feat}
+                        </li>
+                      ))}
+                    </ul>
+
+                    <div className="mt-6">
+                      <a
+                        href="#contact"
+                        className="inline-flex items-center font-dm text-[11px] tracking-[2px] uppercase transition-opacity duration-200 hover:opacity-70"
+                        style={{ color: "#D4AF37" }}
+                      >
+                        Enquire about this package
+                        <span className="ml-2" aria-hidden="true">&rarr;</span>
+                      </a>
+                    </div>
+                  </div>
                 </div>
-
-                {/* CTA */}
-                <a
-                  href="#contact"
-                  className="inline-flex items-center justify-center w-full py-2.5 font-dm text-sm font-medium tracking-wide transition-opacity duration-200 hover:opacity-85"
-                  style={{
-                    backgroundColor: pkg.inverted ? "#110E0A" : "transparent",
-                    color: pkg.inverted ? "#D4AF37" : "#D4AF37",
-                    border: pkg.inverted
-                      ? "none"
-                      : "1px solid rgba(212,175,55,0.45)",
-                    borderRadius: "4px",
-                  }}
-                >
-                  Inquire Now
-                </a>
               </div>
             ))}
-          </div>
 
-          {/* Fine print */}
-          <p
-            className="text-center font-dm text-xs mt-8"
-            style={{ color: "#8A7E6E" }}
-          >
-            All packages are customisable. Pricing varies by event size, location, and duration.
-            Contact us for a tailored quote.
-          </p>
+            {/* Bottom divider */}
+            <div
+              style={{ height: "1px", backgroundColor: "rgba(212,175,55,0.18)" }}
+            />
+          </div>
         </div>
       </section>
 
       {/* ------------------------------------------------------------------ */}
-      {/* GALLERY                                                             */}
+      {/* GALLERY — asymmetric editorial grid                                 */}
       {/* ------------------------------------------------------------------ */}
-      <section id="gallery" className="py-20 lg:py-28">
-        <div className="max-w-6xl mx-auto px-6 lg:px-12">
+      <section
+        id="gallery"
+        className="py-24 lg:py-32"
+        style={{ backgroundColor: "#110E0A" }}
+      >
+        <div className="max-w-6xl mx-auto px-6">
           {/* Header */}
-          <div className="mb-12">
-            <SectionLabel>Portfolio</SectionLabel>
-            <Divider />
+          <div className="text-center mb-14">
+            <SectionLabel>The Work</SectionLabel>
             <h2
-              className="font-playfair font-semibold leading-tight"
-              style={{ fontSize: "clamp(1.75rem, 4vw, 2.75rem)", color: "#F5F0E8" }}
+              className="font-playfair font-semibold leading-tight mt-5"
+              style={{ fontSize: "clamp(1.9rem, 4vw, 3rem)", color: "#F5F0E8" }}
             >
-              Moments We&apos;ve{" "}
-              <span style={{ color: "#D4AF37" }}>Crafted.</span>
+              Captured Moments
             </h2>
           </div>
 
-          {/* 2x2 Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {galleryImages.map((img, index) => (
+          {/* Asymmetric grid: large left (60%), two stacked right (40%) */}
+          <div className="flex flex-col md:flex-row gap-3">
+            {/* Large left image */}
+            <div
+              className="w-full md:w-[60%] relative overflow-hidden"
+              style={{ height: "clamp(300px, 55vw, 560px)", borderRadius: "0" }}
+            >
+              <Image
+                src={images.gallery1}
+                alt="Elegant bar setup at a gala"
+                fill
+                className="object-cover"
+                sizes="(max-width: 768px) 100vw, 60vw"
+              />
               <div
-                key={img.src}
-                className="relative overflow-hidden group"
+                className="absolute inset-0 transition-opacity duration-300"
                 style={{
-                  borderRadius: "8px",
-                  aspectRatio: index % 3 === 0 ? "5/4" : "4/3",
+                  background:
+                    "linear-gradient(to top, rgba(17,14,10,0.5), transparent 60%)",
                 }}
+              />
+              <div className="absolute bottom-6 left-6">
+                <span
+                  className="font-dm text-[10px] tracking-[2px] uppercase"
+                  style={{ color: "rgba(245,240,232,0.6)" }}
+                >
+                  Private Gala &middot; BGC
+                </span>
+              </div>
+            </div>
+
+            {/* Two stacked right images */}
+            <div className="w-full md:w-[40%] flex flex-row md:flex-col gap-3">
+              <div
+                className="flex-1 md:flex-none relative overflow-hidden"
+                style={{ height: "clamp(150px, 26vw, 274px)", borderRadius: "0" }}
               >
                 <Image
-                  src={img.src}
-                  alt={img.alt}
+                  src={images.gallery2}
+                  alt="Handcrafted cocktail close-up"
                   fill
-                  className="object-cover transition-transform duration-700 group-hover:scale-105"
-                  sizes="(max-width: 640px) 100vw, 50vw"
+                  className="object-cover"
+                  sizes="(max-width: 768px) 50vw, 40vw"
                 />
-                {/* Hover overlay */}
                 <div
-                  className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-5"
+                  className="absolute inset-0"
                   style={{
                     background:
-                      "linear-gradient(to top, rgba(17,14,10,0.80) 0%, transparent 60%)",
+                      "linear-gradient(to top, rgba(17,14,10,0.5), transparent 60%)",
                   }}
-                >
+                />
+                <div className="absolute bottom-4 left-4">
                   <span
-                    className="font-dm text-sm tracking-wide"
-                    style={{ color: "#D4AF37" }}
+                    className="font-dm text-[10px] tracking-[2px] uppercase"
+                    style={{ color: "rgba(245,240,232,0.6)" }}
                   >
-                    {img.alt}
+                    Wedding &middot; Makati
                   </span>
                 </div>
               </div>
+              <div
+                className="flex-1 md:flex-none relative overflow-hidden"
+                style={{ height: "clamp(150px, 26vw, 274px)", borderRadius: "0" }}
+              >
+                <Image
+                  src={images.gallery3}
+                  alt="Bartender at work during an event"
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 768px) 50vw, 40vw"
+                />
+                <div
+                  className="absolute inset-0"
+                  style={{
+                    background:
+                      "linear-gradient(to top, rgba(17,14,10,0.5), transparent 60%)",
+                  }}
+                />
+                <div className="absolute bottom-4 left-4">
+                  <span
+                    className="font-dm text-[10px] tracking-[2px] uppercase"
+                    style={{ color: "rgba(245,240,232,0.6)" }}
+                  >
+                    Corporate &middot; Ortigas
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Second row: three equal images */}
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-3">
+            {[
+              { src: images.gallery4, label: "Debut &middot; QC" },
+              { src: images.heroVibrant, label: "Yacht Party &middot; Manila Bay" },
+              { src: images.heroNeon, label: "Night Event &middot; Pasay" },
+            ].map((item, i) => (
+              <div
+                key={i}
+                className="relative overflow-hidden"
+                style={{ height: "200px", borderRadius: "0" }}
+              >
+                <Image
+                  src={item.src}
+                  alt="Sober Club event"
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 640px) 100vw, 33vw"
+                />
+                <div
+                  className="absolute inset-0"
+                  style={{
+                    background:
+                      "linear-gradient(to top, rgba(17,14,10,0.55), transparent 60%)",
+                  }}
+                />
+                <div className="absolute bottom-4 left-4">
+                  <span
+                    className="font-dm text-[10px] tracking-[2px] uppercase"
+                    style={{ color: "rgba(245,240,232,0.6)" }}
+                    dangerouslySetInnerHTML={{ __html: item.label }}
+                  />
+                </div>
+              </div>
             ))}
           </div>
         </div>
       </section>
 
       {/* ------------------------------------------------------------------ */}
-      {/* TESTIMONIALS                                                        */}
+      {/* TESTIMONIALS — centered large quote, floating on bg                 */}
       {/* ------------------------------------------------------------------ */}
       <section
-        className="py-20 lg:py-28"
-        style={{ backgroundColor: "#221E18" }}
+        id="testimonials"
+        className="py-24 lg:py-36"
+        style={{ backgroundColor: "#1A1714" }}
       >
-        <div className="max-w-4xl mx-auto px-6 lg:px-12 text-center">
-          <SectionLabel>Testimonials</SectionLabel>
-          <Divider />
+        <div className="max-w-3xl mx-auto px-6 text-center">
+          <SectionLabel>From Our Clients</SectionLabel>
 
-          {/* Decorative quote mark */}
-          <span
-            className="font-playfair block text-7xl leading-none mb-6 select-none"
-            style={{ color: "rgba(212,175,55,0.20)" }}
-            aria-hidden="true"
-          >
-            &ldquo;
-          </span>
+          <div className="relative mt-8">
+            {/* Decorative quotation mark */}
+            <span
+              className="font-playfair select-none leading-none absolute -top-6 left-1/2 -translate-x-1/2 pointer-events-none"
+              style={{
+                fontSize: "9rem",
+                color: "#D4AF37",
+                opacity: 0.15,
+                lineHeight: 1,
+              }}
+              aria-hidden="true"
+            >
+              &ldquo;
+            </span>
 
-          <blockquote>
-            <p
-              className="font-playfair text-xl md:text-2xl font-medium leading-relaxed mb-8"
+            {/* Quote text */}
+            <blockquote
+              className="relative font-playfair text-xl lg:text-2xl italic leading-[1.75] pt-8"
               style={{ color: "#F5F0E8" }}
             >
-              The cocktails were absolutely exquisite — every guest couldn&apos;t
-              stop talking about the bar. Sober Club elevated our wedding
-              reception into something truly unforgettable. The team was
-              professional, elegant, and genuinely passionate about their craft.
-            </p>
-            <footer>
-              <cite
-                className="font-dm text-sm tracking-[2px] uppercase not-italic"
+              {testimonials[activeTestimonial].quote}
+            </blockquote>
+
+            {/* Gold rule + author */}
+            <div className="mt-8 flex flex-col items-center gap-4">
+              <GoldRule width="40px" />
+              <p
+                className="font-dm text-sm font-medium tracking-wide"
                 style={{ color: "#D4AF37" }}
               >
-                Camille &amp; Rafael Santos
-              </cite>
+                {testimonials[activeTestimonial].author}
+              </p>
               <p
-                className="font-dm text-xs mt-1"
+                className="font-dm text-[11px] tracking-[2px] uppercase"
                 style={{ color: "#8A7E6E" }}
               >
-                Wedding Reception, Quezon City — 2024
+                {testimonials[activeTestimonial].role}
               </p>
-            </footer>
-          </blockquote>
+            </div>
+          </div>
 
-          {/* Dot indicators */}
-          <div className="flex justify-center gap-2 mt-10">
-            {[0, 1, 2].map((i) => (
-              <span
+          {/* Testimonial nav dots */}
+          <div className="flex items-center justify-center gap-3 mt-10">
+            {testimonials.map((_, i) => (
+              <button
                 key={i}
-                className="block rounded-full"
+                onClick={() => setActiveTestimonial(i)}
+                aria-label={`View testimonial ${i + 1}`}
                 style={{
-                  width: i === 0 ? "20px" : "6px",
-                  height: "6px",
-                  backgroundColor: i === 0 ? "#D4AF37" : "rgba(212,175,55,0.25)",
-                  transition: "width 0.3s",
+                  width: i === activeTestimonial ? "24px" : "8px",
+                  height: "1px",
+                  backgroundColor:
+                    i === activeTestimonial
+                      ? "#D4AF37"
+                      : "rgba(212,175,55,0.3)",
+                  transition: "all 0.3s ease",
+                  border: "none",
+                  cursor: "pointer",
+                  padding: 0,
                 }}
               />
             ))}
@@ -760,422 +1038,366 @@ export default function PremiumElegance() {
       </section>
 
       {/* ------------------------------------------------------------------ */}
-      {/* INQUIRY FORM                                                        */}
+      {/* INQUIRY FORM — centered narrow, bottom-border-only fields           */}
       {/* ------------------------------------------------------------------ */}
-      <section id="contact" className="py-20 lg:py-28">
-        <div className="max-w-6xl mx-auto px-6 lg:px-12">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-start">
-            {/* Left: copy */}
-            <div className="lg:sticky lg:top-28">
-              <SectionLabel>Reserve Your Date</SectionLabel>
-              <Divider />
-              <h2
-                className="font-playfair font-semibold leading-tight mb-6"
-                style={{ fontSize: "clamp(1.75rem, 4vw, 2.75rem)", color: "#F5F0E8" }}
+      <section
+        id="contact"
+        className="py-24 lg:py-32"
+        style={{ backgroundColor: "#110E0A" }}
+      >
+        <div className="max-w-lg mx-auto px-6">
+          {/* Heading */}
+          <div className="text-center mb-12">
+            <SectionLabel>Get In Touch</SectionLabel>
+            <h2
+              className="font-playfair font-semibold leading-tight mt-5 mb-4"
+              style={{ fontSize: "clamp(1.9rem, 4vw, 2.8rem)", color: "#F5F0E8" }}
+            >
+              Reserve Your Date
+            </h2>
+            <GoldRule width="50px" />
+            <p
+              className="font-dm text-sm leading-relaxed mt-6"
+              style={{ color: "#8A7E6E", maxWidth: "360px", margin: "1.5rem auto 0" }}
+            >
+              Fill in your details and we&apos;ll reach out within 24 hours to
+              confirm availability and discuss your event.
+            </p>
+          </div>
+
+          {submitted ? (
+            <div className="text-center py-12">
+              <div
+                className="w-12 h-12 mx-auto mb-6 flex items-center justify-center"
+                style={{
+                  border: "1px solid rgba(212,175,55,0.4)",
+                  borderRadius: "50%",
+                }}
               >
-                Make Your Event{" "}
-                <span style={{ color: "#D4AF37" }}>Extraordinary.</span>
-              </h2>
-              <p
-                className="font-dm text-base leading-relaxed mb-8"
-                style={{ color: "#9A8E7E" }}
-              >
-                Tell us about your event and we&apos;ll get back to you within 24
-                hours with a personalised proposal tailored to your vision.
-              </p>
-
-              {/* Contact info */}
-              <div className="flex flex-col gap-5">
-                <div className="flex items-center gap-4">
-                  <span
-                    className="w-9 h-9 flex items-center justify-center shrink-0"
-                    style={{
-                      backgroundColor: "rgba(212,175,55,0.10)",
-                      borderRadius: "4px",
-                      color: "#D4AF37",
-                    }}
-                  >
-                    <Phone size={15} />
-                  </span>
-                  <div>
-                    <p
-                      className="font-dm text-xs tracking-[1px] uppercase mb-0.5"
-                      style={{ color: "#8A7E6E" }}
-                    >
-                      Phone
-                    </p>
-                    <a
-                      href="tel:+639XXXXXXXXX"
-                      className="font-dm text-sm transition-colors duration-200"
-                      style={{ color: "#F5F0E8" }}
-                    >
-                      +63 9XX XXX XXXX
-                    </a>
-                  </div>
-                </div>
-
-                <div className="flex items-center gap-4">
-                  <span
-                    className="w-9 h-9 flex items-center justify-center shrink-0"
-                    style={{
-                      backgroundColor: "rgba(212,175,55,0.10)",
-                      borderRadius: "4px",
-                      color: "#D4AF37",
-                    }}
-                  >
-                    <Mail size={15} />
-                  </span>
-                  <div>
-                    <p
-                      className="font-dm text-xs tracking-[1px] uppercase mb-0.5"
-                      style={{ color: "#8A7E6E" }}
-                    >
-                      Email
-                    </p>
-                    <a
-                      href="mailto:hello@soberclub.ph"
-                      className="font-dm text-sm transition-colors duration-200"
-                      style={{ color: "#F5F0E8" }}
-                    >
-                      hello@soberclub.ph
-                    </a>
-                  </div>
-                </div>
-
-                <div className="flex items-center gap-4">
-                  <span
-                    className="w-9 h-9 flex items-center justify-center shrink-0"
-                    style={{
-                      backgroundColor: "rgba(212,175,55,0.10)",
-                      borderRadius: "4px",
-                      color: "#D4AF37",
-                    }}
-                  >
-                    <MapPin size={15} />
-                  </span>
-                  <div>
-                    <p
-                      className="font-dm text-xs tracking-[1px] uppercase mb-0.5"
-                      style={{ color: "#8A7E6E" }}
-                    >
-                      Location
-                    </p>
-                    <p
-                      className="font-dm text-sm"
-                      style={{ color: "#F5F0E8" }}
-                    >
-                      Quezon City, Metro Manila
-                    </p>
-                  </div>
-                </div>
+                <span style={{ color: "#D4AF37", fontSize: "1.4rem" }}>&#10003;</span>
               </div>
+              <h3
+                className="font-playfair text-2xl font-semibold mb-3"
+                style={{ color: "#F5F0E8" }}
+              >
+                Enquiry Received
+              </h3>
+              <p className="font-dm text-sm" style={{ color: "#8A7E6E" }}>
+                Thank you. We&apos;ll be in touch within 24 hours.
+              </p>
             </div>
-
-            {/* Right: form */}
-            <div>
-              {submitted ? (
-                <div
-                  className="flex flex-col items-center justify-center text-center py-16 px-8"
-                  style={{
-                    backgroundColor: "#221E18",
-                    borderRadius: "8px",
-                    border: "1px solid rgba(212,175,55,0.20)",
-                  }}
+          ) : (
+            <form onSubmit={handleFormSubmit} className="flex flex-col gap-8">
+              {/* Name */}
+              <div className="flex flex-col gap-1.5">
+                <label
+                  htmlFor="name"
+                  className="font-dm text-[10px] tracking-[2px] uppercase"
+                  style={{ color: "#8A7E6E" }}
                 >
-                  <div
-                    className="w-12 h-12 flex items-center justify-center mb-6"
-                    style={{
-                      backgroundColor: "rgba(212,175,55,0.10)",
-                      borderRadius: "4px",
-                      color: "#D4AF37",
-                    }}
-                  >
-                    <Mail size={20} />
-                  </div>
-                  <h3
-                    className="font-playfair text-xl font-semibold mb-3"
-                    style={{ color: "#F5F0E8" }}
-                  >
-                    Inquiry Received
-                  </h3>
-                  <p
-                    className="font-dm text-sm leading-relaxed"
-                    style={{ color: "#9A8E7E" }}
-                  >
-                    Thank you for reaching out. We&apos;ll review your request and
-                    respond with a personalised proposal within 24 hours.
-                  </p>
-                </div>
-              ) : (
-                <form
-                  onSubmit={handleFormSubmit}
-                  className="flex flex-col gap-5"
-                  noValidate
-                >
-                  {/* Row: Name + Email */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                    <div className="flex flex-col gap-1.5">
-                      <label
-                        htmlFor="name"
-                        className="font-dm text-xs tracking-[1px] uppercase"
-                        style={{ color: "#BEB09A" }}
-                      >
-                        Full Name
-                      </label>
-                      <input
-                        id="name"
-                        name="name"
-                        type="text"
-                        required
-                        autoComplete="name"
-                        placeholder="Your full name"
-                        value={formData.name}
-                        onChange={handleFormChange}
-                        className="px-4 py-3 font-dm text-sm border outline-none transition-colors duration-200 placeholder:opacity-40 focus:border-[#D4AF37]"
-                        style={fieldBase}
-                      />
-                    </div>
-                    <div className="flex flex-col gap-1.5">
-                      <label
-                        htmlFor="email"
-                        className="font-dm text-xs tracking-[1px] uppercase"
-                        style={{ color: "#BEB09A" }}
-                      >
-                        Email Address
-                      </label>
-                      <input
-                        id="email"
-                        name="email"
-                        type="email"
-                        required
-                        autoComplete="email"
-                        placeholder="you@example.com"
-                        value={formData.email}
-                        onChange={handleFormChange}
-                        className="px-4 py-3 font-dm text-sm border outline-none transition-colors duration-200 placeholder:opacity-40 focus:border-[#D4AF37]"
-                        style={fieldBase}
-                      />
-                    </div>
-                  </div>
+                  Full Name
+                </label>
+                <input
+                  id="name"
+                  name="name"
+                  type="text"
+                  required
+                  value={formData.name}
+                  onChange={handleFormChange}
+                  className="w-full bg-transparent pb-2 font-dm text-sm focus:outline-none transition-colors duration-200"
+                  style={fieldBase}
+                  onFocus={(e) =>
+                    (e.currentTarget.style.borderBottomColor = "#D4AF37")
+                  }
+                  onBlur={(e) =>
+                    (e.currentTarget.style.borderBottomColor = "#3A3428")
+                  }
+                />
+              </div>
 
-                  {/* Row: Phone + Event Date */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                    <div className="flex flex-col gap-1.5">
-                      <label
-                        htmlFor="phone"
-                        className="font-dm text-xs tracking-[1px] uppercase"
-                        style={{ color: "#BEB09A" }}
-                      >
-                        Phone Number
-                      </label>
-                      <input
-                        id="phone"
-                        name="phone"
-                        type="tel"
-                        autoComplete="tel"
-                        placeholder="+63 9XX XXX XXXX"
-                        value={formData.phone}
-                        onChange={handleFormChange}
-                        className="px-4 py-3 font-dm text-sm border outline-none transition-colors duration-200 placeholder:opacity-40 focus:border-[#D4AF37]"
-                        style={fieldBase}
-                      />
-                    </div>
-                    <div className="flex flex-col gap-1.5">
-                      <label
-                        htmlFor="eventDate"
-                        className="font-dm text-xs tracking-[1px] uppercase"
-                        style={{ color: "#BEB09A" }}
-                      >
-                        Event Date
-                      </label>
-                      <input
-                        id="eventDate"
-                        name="eventDate"
-                        type="date"
-                        required
-                        value={formData.eventDate}
-                        onChange={handleFormChange}
-                        className="px-4 py-3 font-dm text-sm border outline-none transition-colors duration-200 focus:border-[#D4AF37]"
-                        style={{
-                          ...fieldBase,
-                          colorScheme: "dark",
-                        }}
-                      />
-                    </div>
-                  </div>
-
-                  {/* Row: Event Type + Guest Count */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                    <div className="flex flex-col gap-1.5">
-                      <label
-                        htmlFor="eventType"
-                        className="font-dm text-xs tracking-[1px] uppercase"
-                        style={{ color: "#BEB09A" }}
-                      >
-                        Event Type
-                      </label>
-                      <select
-                        id="eventType"
-                        name="eventType"
-                        required
-                        value={formData.eventType}
-                        onChange={handleFormChange}
-                        className="px-4 py-3 font-dm text-sm border outline-none transition-colors duration-200 focus:border-[#D4AF37] appearance-none cursor-pointer"
-                        style={fieldBase}
-                      >
-                        <option value="" disabled>
-                          Select event type
-                        </option>
-                        {eventTypes.map((type) => (
-                          <option key={type} value={type}>
-                            {type}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-                    <div className="flex flex-col gap-1.5">
-                      <label
-                        htmlFor="guestCount"
-                        className="font-dm text-xs tracking-[1px] uppercase"
-                        style={{ color: "#BEB09A" }}
-                      >
-                        Expected Guests
-                      </label>
-                      <input
-                        id="guestCount"
-                        name="guestCount"
-                        type="number"
-                        min="1"
-                        placeholder="e.g. 150"
-                        value={formData.guestCount}
-                        onChange={handleFormChange}
-                        className="px-4 py-3 font-dm text-sm border outline-none transition-colors duration-200 placeholder:opacity-40 focus:border-[#D4AF37]"
-                        style={fieldBase}
-                      />
-                    </div>
-                  </div>
-
-                  {/* Preferred Package */}
-                  <div className="flex flex-col gap-1.5">
-                    <label
-                      htmlFor="preferredPackage"
-                      className="font-dm text-xs tracking-[1px] uppercase"
-                      style={{ color: "#BEB09A" }}
-                    >
-                      Preferred Package
-                    </label>
-                    <select
-                      id="preferredPackage"
-                      name="preferredPackage"
-                      value={formData.preferredPackage}
-                      onChange={handleFormChange}
-                      className="px-4 py-3 font-dm text-sm border outline-none transition-colors duration-200 focus:border-[#D4AF37] appearance-none cursor-pointer"
-                      style={fieldBase}
-                    >
-                      <option value="" disabled>
-                        Select a package
-                      </option>
-                      {preferredPackages.map((pkg) => (
-                        <option key={pkg} value={pkg}>
-                          {pkg}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-
-                  {/* Notes */}
-                  <div className="flex flex-col gap-1.5">
-                    <label
-                      htmlFor="notes"
-                      className="font-dm text-xs tracking-[1px] uppercase"
-                      style={{ color: "#BEB09A" }}
-                    >
-                      Additional Notes
-                    </label>
-                    <textarea
-                      id="notes"
-                      name="notes"
-                      rows={4}
-                      placeholder="Tell us about your vision, venue, or any special requirements..."
-                      value={formData.notes}
-                      onChange={handleFormChange}
-                      className="px-4 py-3 font-dm text-sm border outline-none transition-colors duration-200 placeholder:opacity-40 focus:border-[#D4AF37] resize-none"
-                      style={fieldBase}
-                    />
-                  </div>
-
-                  {/* Submit */}
-                  <button
-                    type="submit"
-                    className="mt-2 inline-flex items-center justify-center w-full py-4 font-dm text-sm font-medium tracking-[1.5px] uppercase transition-opacity duration-200 hover:opacity-85 active:opacity-70"
-                    style={{
-                      backgroundColor: "#D4AF37",
-                      color: "#110E0A",
-                      borderRadius: "4px",
-                    }}
-                  >
-                    Submit Inquiry
-                  </button>
-
-                  <p
-                    className="text-center font-dm text-xs"
+              {/* Email + Phone */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
+                <div className="flex flex-col gap-1.5">
+                  <label
+                    htmlFor="email"
+                    className="font-dm text-[10px] tracking-[2px] uppercase"
                     style={{ color: "#8A7E6E" }}
                   >
-                    We respect your privacy. Your information will never be
-                    shared with third parties.
-                  </p>
-                </form>
-              )}
-            </div>
-          </div>
+                    Email Address
+                  </label>
+                  <input
+                    id="email"
+                    name="email"
+                    type="email"
+                    required
+                    value={formData.email}
+                    onChange={handleFormChange}
+                    className="w-full bg-transparent pb-2 font-dm text-sm focus:outline-none transition-colors duration-200"
+                    style={fieldBase}
+                    onFocus={(e) =>
+                      (e.currentTarget.style.borderBottomColor = "#D4AF37")
+                    }
+                    onBlur={(e) =>
+                      (e.currentTarget.style.borderBottomColor = "#3A3428")
+                    }
+                  />
+                </div>
+                <div className="flex flex-col gap-1.5">
+                  <label
+                    htmlFor="phone"
+                    className="font-dm text-[10px] tracking-[2px] uppercase"
+                    style={{ color: "#8A7E6E" }}
+                  >
+                    Phone Number
+                  </label>
+                  <input
+                    id="phone"
+                    name="phone"
+                    type="tel"
+                    value={formData.phone}
+                    onChange={handleFormChange}
+                    className="w-full bg-transparent pb-2 font-dm text-sm focus:outline-none transition-colors duration-200"
+                    style={fieldBase}
+                    onFocus={(e) =>
+                      (e.currentTarget.style.borderBottomColor = "#D4AF37")
+                    }
+                    onBlur={(e) =>
+                      (e.currentTarget.style.borderBottomColor = "#3A3428")
+                    }
+                  />
+                </div>
+              </div>
+
+              {/* Event Date + Guest Count */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
+                <div className="flex flex-col gap-1.5">
+                  <label
+                    htmlFor="eventDate"
+                    className="font-dm text-[10px] tracking-[2px] uppercase"
+                    style={{ color: "#8A7E6E" }}
+                  >
+                    Event Date
+                  </label>
+                  <input
+                    id="eventDate"
+                    name="eventDate"
+                    type="date"
+                    value={formData.eventDate}
+                    onChange={handleFormChange}
+                    className="w-full bg-transparent pb-2 font-dm text-sm focus:outline-none transition-colors duration-200"
+                    style={{ ...fieldBase, colorScheme: "dark" }}
+                    onFocus={(e) =>
+                      (e.currentTarget.style.borderBottomColor = "#D4AF37")
+                    }
+                    onBlur={(e) =>
+                      (e.currentTarget.style.borderBottomColor = "#3A3428")
+                    }
+                  />
+                </div>
+                <div className="flex flex-col gap-1.5">
+                  <label
+                    htmlFor="guestCount"
+                    className="font-dm text-[10px] tracking-[2px] uppercase"
+                    style={{ color: "#8A7E6E" }}
+                  >
+                    Expected Guests
+                  </label>
+                  <input
+                    id="guestCount"
+                    name="guestCount"
+                    type="number"
+                    min={1}
+                    value={formData.guestCount}
+                    onChange={handleFormChange}
+                    className="w-full bg-transparent pb-2 font-dm text-sm focus:outline-none transition-colors duration-200"
+                    style={fieldBase}
+                    onFocus={(e) =>
+                      (e.currentTarget.style.borderBottomColor = "#D4AF37")
+                    }
+                    onBlur={(e) =>
+                      (e.currentTarget.style.borderBottomColor = "#3A3428")
+                    }
+                  />
+                </div>
+              </div>
+
+              {/* Event Type */}
+              <div className="flex flex-col gap-1.5">
+                <label
+                  htmlFor="eventType"
+                  className="font-dm text-[10px] tracking-[2px] uppercase"
+                  style={{ color: "#8A7E6E" }}
+                >
+                  Event Type
+                </label>
+                <select
+                  id="eventType"
+                  name="eventType"
+                  value={formData.eventType}
+                  onChange={handleFormChange}
+                  className="w-full bg-transparent pb-2 font-dm text-sm focus:outline-none transition-colors duration-200 cursor-pointer"
+                  style={{ ...fieldBase, backgroundColor: "transparent" }}
+                  onFocus={(e) =>
+                    (e.currentTarget.style.borderBottomColor = "#D4AF37")
+                  }
+                  onBlur={(e) =>
+                    (e.currentTarget.style.borderBottomColor = "#3A3428")
+                  }
+                >
+                  <option value="" style={{ backgroundColor: "#1A1714" }}>
+                    Select type
+                  </option>
+                  {formEventTypes.map((t) => (
+                    <option
+                      key={t}
+                      value={t}
+                      style={{ backgroundColor: "#1A1714" }}
+                    >
+                      {t}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              {/* Preferred Package */}
+              <div className="flex flex-col gap-1.5">
+                <label
+                  htmlFor="preferredPackage"
+                  className="font-dm text-[10px] tracking-[2px] uppercase"
+                  style={{ color: "#8A7E6E" }}
+                >
+                  Preferred Package
+                </label>
+                <select
+                  id="preferredPackage"
+                  name="preferredPackage"
+                  value={formData.preferredPackage}
+                  onChange={handleFormChange}
+                  className="w-full bg-transparent pb-2 font-dm text-sm focus:outline-none transition-colors duration-200 cursor-pointer"
+                  style={{ ...fieldBase, backgroundColor: "transparent" }}
+                  onFocus={(e) =>
+                    (e.currentTarget.style.borderBottomColor = "#D4AF37")
+                  }
+                  onBlur={(e) =>
+                    (e.currentTarget.style.borderBottomColor = "#3A3428")
+                  }
+                >
+                  <option value="" style={{ backgroundColor: "#1A1714" }}>
+                    Select package
+                  </option>
+                  {preferredPackages.map((p) => (
+                    <option
+                      key={p}
+                      value={p}
+                      style={{ backgroundColor: "#1A1714" }}
+                    >
+                      {p}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              {/* Notes */}
+              <div className="flex flex-col gap-1.5">
+                <label
+                  htmlFor="notes"
+                  className="font-dm text-[10px] tracking-[2px] uppercase"
+                  style={{ color: "#8A7E6E" }}
+                >
+                  Additional Notes
+                </label>
+                <textarea
+                  id="notes"
+                  name="notes"
+                  rows={3}
+                  value={formData.notes}
+                  onChange={handleFormChange}
+                  className="w-full bg-transparent pb-2 font-dm text-sm focus:outline-none transition-colors duration-200 resize-none"
+                  style={fieldBase}
+                  onFocus={(e) =>
+                    (e.currentTarget.style.borderBottomColor = "#D4AF37")
+                  }
+                  onBlur={(e) =>
+                    (e.currentTarget.style.borderBottomColor = "#3A3428")
+                  }
+                />
+              </div>
+
+              {/* Submit */}
+              <div className="flex justify-center pt-2">
+                <button
+                  type="submit"
+                  className="px-12 py-3.5 font-dm text-[11px] font-medium tracking-[3px] uppercase transition-opacity duration-200 hover:opacity-80"
+                  style={{
+                    backgroundColor: "#D4AF37",
+                    color: "#110E0A",
+                    borderRadius: "4px",
+                  }}
+                >
+                  Send Enquiry
+                </button>
+              </div>
+            </form>
+          )}
         </div>
       </section>
 
       {/* ------------------------------------------------------------------ */}
-      {/* FOOTER                                                              */}
+      {/* FOOTER — two rows                                                   */}
       {/* ------------------------------------------------------------------ */}
       <footer style={{ backgroundColor: "#110E0A" }}>
-        {/* Main footer */}
-        <div className="max-w-6xl mx-auto px-6 lg:px-12 py-14">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-8">
+        {/* Top row: 3 columns */}
+        <div className="max-w-6xl mx-auto px-6 pt-16 pb-12">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-8">
             {/* Brand column */}
-            <div className="md:col-span-1">
+            <div>
               <span
-                className="font-playfair text-lg font-semibold tracking-[2px] uppercase block mb-3"
-                style={{ color: "#D4AF37" }}
+                className="font-playfair font-semibold tracking-[3px] uppercase block mb-4"
+                style={{ fontSize: "1.1rem", color: "#D4AF37" }}
               >
                 Sober Club
               </span>
               <p
-                className="font-dm text-sm leading-relaxed mb-5"
-                style={{ color: "#8A7E6E", fontStyle: "italic" }}
+                className="font-dm text-sm leading-[1.85]"
+                style={{ color: "#8A7E6E", maxWidth: "240px" }}
               >
-                &ldquo;It&apos;s never a party unless we&apos;re there.&rdquo;
+                It&apos;s never a party unless we&apos;re there. Premium mobile bar
+                service, Quezon City, Philippines.
               </p>
-              <p
-                className="font-dm text-xs leading-relaxed"
-                style={{ color: "#8A7E6E" }}
-              >
-                Premium mobile bar service. Quezon City, Philippines.
-                Serving Metro Manila and beyond since 2004.
-              </p>
+              <div className="flex items-center gap-4 mt-6">
+                <a
+                  href="#"
+                  aria-label="Facebook"
+                  className="transition-colors duration-200"
+                  style={{ color: "#8A7E6E" }}
+                  onMouseEnter={(e) => (e.currentTarget.style.color = "#D4AF37")}
+                  onMouseLeave={(e) => (e.currentTarget.style.color = "#8A7E6E")}
+                >
+                  <IconFacebook size={16} />
+                </a>
+                <a
+                  href="#"
+                  aria-label="Instagram"
+                  className="transition-colors duration-200"
+                  style={{ color: "#8A7E6E" }}
+                  onMouseEnter={(e) => (e.currentTarget.style.color = "#D4AF37")}
+                  onMouseLeave={(e) => (e.currentTarget.style.color = "#8A7E6E")}
+                >
+                  <IconInstagram size={16} />
+                </a>
+              </div>
             </div>
 
-            {/* Navigation */}
+            {/* Navigation column */}
             <div>
-              <h4
-                className="font-dm text-xs tracking-[2px] uppercase mb-5"
+              <p
+                className="font-dm text-[10px] tracking-[3px] uppercase mb-5"
                 style={{ color: "#D4AF37" }}
               >
-                Navigate
-              </h4>
+                Navigation
+              </p>
               <nav className="flex flex-col gap-3">
-                {[
-                  { label: "About Us", href: "#about" },
-                  { label: "Packages", href: "#packages" },
-                  { label: "Gallery", href: "#gallery" },
-                  { label: "Contact", href: "#contact" },
-                ].map((link) => (
+                {navLinks.map((link) => (
                   <a
                     key={link.href}
                     href={link.href}
@@ -1191,20 +1413,33 @@ export default function PremiumElegance() {
                     {link.label}
                   </a>
                 ))}
+                <a
+                  href="#contact"
+                  className="font-dm text-sm transition-colors duration-200"
+                  style={{ color: "#8A7E6E" }}
+                  onMouseEnter={(e) =>
+                    (e.currentTarget.style.color = "#F5F0E8")
+                  }
+                  onMouseLeave={(e) =>
+                    (e.currentTarget.style.color = "#8A7E6E")
+                  }
+                >
+                  Reserve
+                </a>
               </nav>
             </div>
 
-            {/* Contact */}
+            {/* Contact column */}
             <div>
-              <h4
-                className="font-dm text-xs tracking-[2px] uppercase mb-5"
+              <p
+                className="font-dm text-[10px] tracking-[3px] uppercase mb-5"
                 style={{ color: "#D4AF37" }}
               >
-                Get In Touch
-              </h4>
+                Contact
+              </p>
               <div className="flex flex-col gap-4">
                 <a
-                  href="tel:+639XXXXXXXXX"
+                  href="tel:+639000000000"
                   className="flex items-center gap-3 font-dm text-sm transition-colors duration-200"
                   style={{ color: "#8A7E6E" }}
                   onMouseEnter={(e) =>
@@ -1214,8 +1449,8 @@ export default function PremiumElegance() {
                     (e.currentTarget.style.color = "#8A7E6E")
                   }
                 >
-                  <Phone size={13} style={{ color: "#D4AF37", flexShrink: 0 }} />
-                  +63 9XX XXX XXXX
+                  <Phone size={14} style={{ flexShrink: 0 }} />
+                  +63 900 000 0000
                 </a>
                 <a
                   href="mailto:hello@soberclub.ph"
@@ -1228,49 +1463,34 @@ export default function PremiumElegance() {
                     (e.currentTarget.style.color = "#8A7E6E")
                   }
                 >
-                  <Mail size={13} style={{ color: "#D4AF37", flexShrink: 0 }} />
+                  <Mail size={14} style={{ flexShrink: 0 }} />
                   hello@soberclub.ph
                 </a>
-                <div className="flex items-start gap-3">
-                  <MapPin
-                    size={13}
-                    style={{ color: "#D4AF37", flexShrink: 0, marginTop: "2px" }}
-                  />
-                  <span
-                    className="font-dm text-sm"
-                    style={{ color: "#8A7E6E" }}
-                  >
-                    Quezon City,
-                    <br />
-                    Metro Manila, Philippines
-                  </span>
+                <div
+                  className="flex items-start gap-3 font-dm text-sm"
+                  style={{ color: "#8A7E6E" }}
+                >
+                  <MapPin size={14} style={{ flexShrink: 0, marginTop: "2px" }} />
+                  Quezon City, Metro Manila, Philippines
                 </div>
               </div>
             </div>
           </div>
         </div>
 
-        {/* Divider */}
+        {/* Gold divider */}
         <div
-          className="max-w-6xl mx-auto mx-6 lg:mx-12"
-          style={{
-            borderTop: "1px solid rgba(212,175,55,0.12)",
-          }}
+          style={{ height: "1px", backgroundColor: "rgba(212,175,55,0.15)" }}
         />
 
-        {/* Copyright bar */}
-        <div className="max-w-6xl mx-auto px-6 lg:px-12 py-6 flex flex-col sm:flex-row items-center justify-between gap-3">
+        {/* Bottom row: centered copyright */}
+        <div className="max-w-6xl mx-auto px-6 py-6 text-center">
           <p
-            className="font-dm text-xs"
+            className="font-dm text-[11px] tracking-[1px]"
             style={{ color: "#8A7E6E" }}
           >
             &copy; {new Date().getFullYear()} Sober Club. All rights reserved.
-          </p>
-          <p
-            className="font-dm text-xs"
-            style={{ color: "#8A7E6E" }}
-          >
-            Quezon City, Philippines
+            &nbsp;&middot;&nbsp; Quezon City, Philippines
           </p>
         </div>
       </footer>

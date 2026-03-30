@@ -13,6 +13,8 @@ const config: Config = {
         foreground: "var(--foreground)",
       },
       fontFamily: {
+        bebas: ["Bebas Neue", "cursive"],
+        outfit: ["Outfit", "sans-serif"],
         righteous: ["Righteous", "cursive"],
         poppins: ["Poppins", "sans-serif"],
         playfair: ["Playfair Display", "serif"],
