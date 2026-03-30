@@ -134,9 +134,9 @@ const packages: Package[] = [
 const testimonials: Testimonial[] = [
   {
     quote:
-      "Sober Club transformed our wedding reception into something truly unforgettable. The bar was as beautiful as it was expertly run — every guest was talking about it.",
-    author: "Camille & Rafael Santos",
-    role: "Wedding at Shangri-La BGC",
+      "Honestly, Sober Club MADE our wedding. Every single guest was raving about the cocktails — they even got my lola doing shots!",
+    author: "— Pia M.",
+    role: "Wedding in Antipolo",
   },
   {
     quote:
@@ -147,11 +147,12 @@ const testimonials: Testimonial[] = [
 ];
 
 const eventTypes = [
-  "Wedding",
-  "Gala",
+  "Weddings",
+  "Debuts",
   "Corporate",
-  "Private",
-  "Yacht",
+  "House Parties",
+  "Yacht Nights",
+  "Fiestas",
 ];
 
 const formEventTypes = [
@@ -178,7 +179,7 @@ const preferredPackages = [
 function SectionLabel({ children }: { children: React.ReactNode }) {
   return (
     <span
-      className="font-dm text-[10px] tracking-[4px] uppercase"
+      className="font-jost text-[10px] tracking-[4px] uppercase"
       style={{ color: "#D4AF37" }}
     >
       {children}
@@ -252,7 +253,7 @@ export default function PremiumElegance() {
 
   return (
     <div
-      className="min-h-screen font-dm antialiased"
+      className="min-h-screen font-jost antialiased"
       style={{ backgroundColor: "#1A1714", color: "#F5F0E8" }}
     >
       {/* ------------------------------------------------------------------ */}
@@ -274,7 +275,7 @@ export default function PremiumElegance() {
             aria-label="Sober Club — home"
           >
             <span
-              className="font-playfair font-semibold tracking-[4px] uppercase"
+              className="font-cormorant font-semibold tracking-[4px] uppercase"
               style={{ fontSize: "1.45rem", color: "#D4AF37" }}
             >
               Sober Club
@@ -291,7 +292,7 @@ export default function PremiumElegance() {
             <a
               key={link.href}
               href={link.href}
-              className="font-dm text-[11px] tracking-[2px] uppercase transition-colors duration-200"
+              className="font-jost text-[11px] tracking-[2px] uppercase transition-colors duration-200"
               style={{ color: "#9A8E7E" }}
               onMouseEnter={(e) => (e.currentTarget.style.color = "#F5F0E8")}
               onMouseLeave={(e) => (e.currentTarget.style.color = "#9A8E7E")}
@@ -301,7 +302,7 @@ export default function PremiumElegance() {
           ))}
           <a
             href="#contact"
-            className="font-dm text-[11px] tracking-[2px] uppercase px-5 py-2 transition-opacity duration-200 hover:opacity-80"
+            className="font-jost text-[11px] tracking-[2px] uppercase px-5 py-2 transition-opacity duration-200 hover:opacity-80"
             style={{
               backgroundColor: "#D4AF37",
               color: "#110E0A",
@@ -317,7 +318,7 @@ export default function PremiumElegance() {
         <div className="md:hidden flex items-center justify-between px-6 py-4">
           <a href="#hero" className="select-none" aria-label="Sober Club — home">
             <span
-              className="font-playfair font-semibold tracking-[3px] uppercase"
+              className="font-cormorant font-semibold tracking-[3px] uppercase"
               style={{ fontSize: "1.1rem", color: "#D4AF37" }}
             >
               Sober Club
@@ -345,7 +346,7 @@ export default function PremiumElegance() {
               <a
                 key={link.href}
                 href={link.href}
-                className="font-playfair text-3xl font-medium"
+                className="font-cormorant text-3xl font-medium"
                 style={{ color: "#F5F0E8" }}
                 onClick={() => setMenuOpen(false)}
               >
@@ -355,7 +356,7 @@ export default function PremiumElegance() {
           </nav>
           <a
             href="#contact"
-            className="mt-auto inline-flex items-center justify-center px-6 py-3.5 font-dm text-sm font-medium tracking-[2px] uppercase transition-opacity hover:opacity-80"
+            className="mt-auto inline-flex items-center justify-center px-6 py-3.5 font-jost text-sm font-medium tracking-[2px] uppercase transition-opacity hover:opacity-80"
             style={{
               backgroundColor: "#D4AF37",
               color: "#110E0A",
@@ -411,7 +412,7 @@ export default function PremiumElegance() {
             {/* Est. badge */}
             <div className="mb-8">
               <span
-                className="font-dm text-[10px] tracking-[3px] uppercase px-3 py-1.5"
+                className="font-jost text-[10px] tracking-[3px] uppercase px-3 py-1.5"
                 style={{
                   color: "#D4AF37",
                   backgroundColor: "rgba(212,175,55,0.10)",
@@ -425,13 +426,13 @@ export default function PremiumElegance() {
 
             {/* Heading */}
             <h1
-              className="font-playfair font-semibold leading-[1.05] mb-6"
+              className="font-cormorant font-semibold leading-[1.05] mb-6"
               style={{ fontSize: "clamp(2.6rem, 5.5vw, 4.25rem)", color: "#F5F0E8" }}
             >
-              Elevate Your
+              Where Every Night Becomes a
               <br />
               <em style={{ color: "#D4AF37", fontStyle: "italic" }}>
-                Celebration
+                Story
               </em>
             </h1>
 
@@ -442,18 +443,18 @@ export default function PremiumElegance() {
 
             {/* Subheadline */}
             <p
-              className="font-dm text-base md:text-[1.05rem] leading-[1.8] mb-10"
+              className="font-jost text-base md:text-[1.05rem] leading-[1.8] mb-10"
               style={{ color: "#9A8E7E", maxWidth: "420px" }}
             >
-              Bespoke mobile bar experiences crafted for weddings, galas, and
-              private events across Metro Manila. Every pour, perfected.
+              Premium mobile bar experiences that turn your event into the
+              night everyone talks about.
             </p>
 
             {/* CTAs */}
             <div className="flex flex-col sm:flex-row gap-4">
               <a
                 href="#contact"
-                className="inline-flex items-center justify-center px-8 py-3.5 font-dm text-[12px] font-medium tracking-[2px] uppercase transition-opacity duration-200 hover:opacity-80"
+                className="inline-flex items-center justify-center px-8 py-3.5 font-jost text-[12px] font-medium tracking-[2px] uppercase transition-opacity duration-200 hover:opacity-80"
                 style={{
                   backgroundColor: "#D4AF37",
                   color: "#110E0A",
@@ -464,7 +465,7 @@ export default function PremiumElegance() {
               </a>
               <a
                 href="#packages"
-                className="inline-flex items-center justify-center px-8 py-3.5 font-dm text-[12px] font-medium tracking-[2px] uppercase transition-opacity duration-200 hover:opacity-80"
+                className="inline-flex items-center justify-center px-8 py-3.5 font-jost text-[12px] font-medium tracking-[2px] uppercase transition-opacity duration-200 hover:opacity-80"
                 style={{
                   color: "#D4AF37",
                   border: "1px solid rgba(212,175,55,0.35)",
@@ -486,7 +487,7 @@ export default function PremiumElegance() {
                 }}
               />
               <span
-                className="font-dm text-[10px] tracking-[2px] uppercase"
+                className="font-jost text-[10px] tracking-[2px] uppercase"
                 style={{ color: "#8A7E6E" }}
               >
                 Scroll
@@ -530,13 +531,13 @@ export default function PremiumElegance() {
               <div key={stat.label} className="flex items-center">
                 <div className="flex flex-col items-center text-center px-10 md:px-16 py-8 sm:py-0">
                   <span
-                    className="font-playfair font-semibold leading-none mb-3"
+                    className="font-cormorant font-semibold leading-none mb-3"
                     style={{ fontSize: "clamp(2.4rem, 5vw, 3.5rem)", color: "#D4AF37" }}
                   >
                     {stat.value}
                   </span>
                   <span
-                    className="font-dm text-[10px] tracking-[3px] uppercase"
+                    className="font-jost text-[10px] tracking-[3px] uppercase"
                     style={{ color: "#8A7E6E" }}
                   >
                     {stat.label}
@@ -580,37 +581,34 @@ export default function PremiumElegance() {
       >
         <div className="max-w-2xl mx-auto px-6 text-center">
           {/* Label */}
-          <SectionLabel>The Experience</SectionLabel>
+          <SectionLabel>What We Do</SectionLabel>
 
           {/* Heading */}
           <h2
-            className="font-playfair font-semibold leading-tight mt-5 mb-6"
+            className="font-cormorant font-semibold leading-tight mt-5 mb-6"
             style={{ fontSize: "clamp(1.9rem, 4vw, 3rem)", color: "#F5F0E8" }}
           >
-            More Than{" "}
-            <span style={{ color: "#D4AF37" }}>Mixology.</span>
+            We Don&apos;t Just Show Up.{" "}
+            <span style={{ color: "#D4AF37" }}>We Show Out.</span>
           </h2>
 
           <GoldRule width="60px" />
 
           {/* Body copy */}
           <p
-            className="font-dm text-base leading-[1.9] mt-8 mb-5"
+            className="font-jost text-base leading-[1.9] mt-8 mb-5"
             style={{ color: "#9A8E7E" }}
           >
-            For over two decades, Sober Club has been the quiet force behind
-            Metro Manila&apos;s most memorable celebrations. We bring the
-            craft of the cocktail bar directly to your venue — fully equipped,
-            immaculately styled, and staffed by experts who understand that
-            every detail matters.
+            For over 20 years, we&apos;ve been the secret ingredient behind
+            Quezon City&apos;s most unforgettable nights. Our mixologists don&apos;t
+            just make drinks — they create experiences that get the crowd going
+            and keep the good times flowing.
           </p>
           <p
-            className="font-dm text-base leading-[1.9] mb-12"
+            className="font-jost text-base leading-[1.9] mb-12"
             style={{ color: "#8A7E6E" }}
           >
-            From intimate debuts to grand corporate galas, our service is
-            designed to feel effortless — because behind that effortlessness
-            is years of refined expertise. It&apos;s never a party unless we&apos;re there.
+            It&apos;s never a party unless we&apos;re there.
           </p>
 
           {/* About image */}
@@ -643,7 +641,7 @@ export default function PremiumElegance() {
             {eventTypes.map((type, index) => (
               <span key={type} className="inline-flex items-center">
                 <span
-                  className="font-dm text-[11px] tracking-[2px] uppercase"
+                  className="font-jost text-[11px] tracking-[2px] uppercase"
                   style={{ color: "#9A8E7E" }}
                 >
                   {type}
@@ -674,12 +672,12 @@ export default function PremiumElegance() {
         <div className="max-w-5xl mx-auto px-6">
           {/* Section header */}
           <div className="text-center mb-16">
-            <SectionLabel>What We Offer</SectionLabel>
+            <SectionLabel>Our Packages</SectionLabel>
             <h2
-              className="font-playfair font-semibold leading-tight mt-5"
+              className="font-cormorant font-semibold leading-tight mt-5"
               style={{ fontSize: "clamp(1.9rem, 4vw, 3rem)", color: "#F5F0E8" }}
             >
-              Our Bar Packages
+              Find Your Perfect Pour
             </h2>
           </div>
 
@@ -733,7 +731,7 @@ export default function PremiumElegance() {
                       <div>
                         {pkg.badge && (
                           <span
-                            className="inline-block font-dm text-[9px] tracking-[3px] uppercase px-2.5 py-1 mb-3"
+                            className="inline-block font-jost text-[9px] tracking-[3px] uppercase px-2.5 py-1 mb-3"
                             style={{
                               color: "#D4AF37",
                               border: "1px solid rgba(212,175,55,0.4)",
@@ -744,7 +742,7 @@ export default function PremiumElegance() {
                           </span>
                         )}
                         <h3
-                          className="font-playfair font-semibold leading-snug"
+                          className="font-cormorant font-semibold leading-snug"
                           style={{
                             fontSize: "clamp(1.3rem, 3vw, 1.7rem)",
                             color: pkg.isPremium ? "#D4AF37" : "#F5F0E8",
@@ -754,14 +752,14 @@ export default function PremiumElegance() {
                           {pkg.name}
                         </h3>
                         <p
-                          className="font-dm text-sm mt-1"
+                          className="font-jost text-sm mt-1"
                           style={{ color: "#8A7E6E", fontStyle: "italic" }}
                         >
                           {pkg.tagline}
                         </p>
                       </div>
                       <span
-                        className="font-playfair text-xl font-semibold flex-shrink-0"
+                        className="font-cormorant text-xl font-semibold flex-shrink-0"
                         style={{ color: "#D4AF37" }}
                       >
                         {pkg.price}
@@ -772,7 +770,7 @@ export default function PremiumElegance() {
                       {pkg.features.map((feat) => (
                         <li
                           key={feat}
-                          className="flex items-center gap-3 font-dm text-sm"
+                          className="flex items-center gap-3 font-jost text-sm"
                           style={{ color: "#9A8E7E" }}
                         >
                           <span
@@ -791,7 +789,7 @@ export default function PremiumElegance() {
                     <div className="mt-6">
                       <a
                         href="#contact"
-                        className="inline-flex items-center font-dm text-[11px] tracking-[2px] uppercase transition-opacity duration-200 hover:opacity-70"
+                        className="inline-flex items-center font-jost text-[11px] tracking-[2px] uppercase transition-opacity duration-200 hover:opacity-70"
                         style={{ color: "#D4AF37" }}
                       >
                         Enquire about this package
@@ -822,9 +820,9 @@ export default function PremiumElegance() {
         <div className="max-w-6xl mx-auto px-6">
           {/* Header */}
           <div className="text-center mb-14">
-            <SectionLabel>The Work</SectionLabel>
+            <SectionLabel>Our Events</SectionLabel>
             <h2
-              className="font-playfair font-semibold leading-tight mt-5"
+              className="font-cormorant font-semibold leading-tight mt-5"
               style={{ fontSize: "clamp(1.9rem, 4vw, 3rem)", color: "#F5F0E8" }}
             >
               Captured Moments
@@ -854,7 +852,7 @@ export default function PremiumElegance() {
               />
               <div className="absolute bottom-6 left-6">
                 <span
-                  className="font-dm text-[10px] tracking-[2px] uppercase"
+                  className="font-jost text-[10px] tracking-[2px] uppercase"
                   style={{ color: "rgba(245,240,232,0.6)" }}
                 >
                   Private Gala &middot; BGC
@@ -884,7 +882,7 @@ export default function PremiumElegance() {
                 />
                 <div className="absolute bottom-4 left-4">
                   <span
-                    className="font-dm text-[10px] tracking-[2px] uppercase"
+                    className="font-jost text-[10px] tracking-[2px] uppercase"
                     style={{ color: "rgba(245,240,232,0.6)" }}
                   >
                     Wedding &middot; Makati
@@ -911,7 +909,7 @@ export default function PremiumElegance() {
                 />
                 <div className="absolute bottom-4 left-4">
                   <span
-                    className="font-dm text-[10px] tracking-[2px] uppercase"
+                    className="font-jost text-[10px] tracking-[2px] uppercase"
                     style={{ color: "rgba(245,240,232,0.6)" }}
                   >
                     Corporate &middot; Ortigas
@@ -949,7 +947,7 @@ export default function PremiumElegance() {
                 />
                 <div className="absolute bottom-4 left-4">
                   <span
-                    className="font-dm text-[10px] tracking-[2px] uppercase"
+                    className="font-jost text-[10px] tracking-[2px] uppercase"
                     style={{ color: "rgba(245,240,232,0.6)" }}
                     dangerouslySetInnerHTML={{ __html: item.label }}
                   />
@@ -969,12 +967,12 @@ export default function PremiumElegance() {
         style={{ backgroundColor: "#1A1714" }}
       >
         <div className="max-w-3xl mx-auto px-6 text-center">
-          <SectionLabel>From Our Clients</SectionLabel>
+          <SectionLabel>Real Talk</SectionLabel>
 
           <div className="relative mt-8">
             {/* Decorative quotation mark */}
             <span
-              className="font-playfair select-none leading-none absolute -top-6 left-1/2 -translate-x-1/2 pointer-events-none"
+              className="font-cormorant select-none leading-none absolute -top-6 left-1/2 -translate-x-1/2 pointer-events-none"
               style={{
                 fontSize: "9rem",
                 color: "#D4AF37",
@@ -988,7 +986,7 @@ export default function PremiumElegance() {
 
             {/* Quote text */}
             <blockquote
-              className="relative font-playfair text-xl lg:text-2xl italic leading-[1.75] pt-8"
+              className="relative font-cormorant text-xl lg:text-2xl italic leading-[1.75] pt-8"
               style={{ color: "#F5F0E8" }}
             >
               {testimonials[activeTestimonial].quote}
@@ -998,13 +996,13 @@ export default function PremiumElegance() {
             <div className="mt-8 flex flex-col items-center gap-4">
               <GoldRule width="40px" />
               <p
-                className="font-dm text-sm font-medium tracking-wide"
+                className="font-jost text-sm font-medium tracking-wide"
                 style={{ color: "#D4AF37" }}
               >
                 {testimonials[activeTestimonial].author}
               </p>
               <p
-                className="font-dm text-[11px] tracking-[2px] uppercase"
+                className="font-jost text-[11px] tracking-[2px] uppercase"
                 style={{ color: "#8A7E6E" }}
               >
                 {testimonials[activeTestimonial].role}
@@ -1048,20 +1046,20 @@ export default function PremiumElegance() {
         <div className="max-w-lg mx-auto px-6">
           {/* Heading */}
           <div className="text-center mb-12">
-            <SectionLabel>Get In Touch</SectionLabel>
+            <SectionLabel>Let&apos;s Go</SectionLabel>
             <h2
-              className="font-playfair font-semibold leading-tight mt-5 mb-4"
+              className="font-cormorant font-semibold leading-tight mt-5 mb-4"
               style={{ fontSize: "clamp(1.9rem, 4vw, 2.8rem)", color: "#F5F0E8" }}
             >
-              Reserve Your Date
+              Let&apos;s Plan Your Next Big Night
             </h2>
             <GoldRule width="50px" />
             <p
-              className="font-dm text-sm leading-relaxed mt-6"
+              className="font-jost text-sm leading-relaxed mt-6"
               style={{ color: "#8A7E6E", maxWidth: "360px", margin: "1.5rem auto 0" }}
             >
-              Fill in your details and we&apos;ll reach out within 24 hours to
-              confirm availability and discuss your event.
+              Tell us about your event and we&apos;ll put together a custom
+              package that fits your vibe and budget.
             </p>
           </div>
 
@@ -1077,12 +1075,12 @@ export default function PremiumElegance() {
                 <span style={{ color: "#D4AF37", fontSize: "1.4rem" }}>&#10003;</span>
               </div>
               <h3
-                className="font-playfair text-2xl font-semibold mb-3"
+                className="font-cormorant text-2xl font-semibold mb-3"
                 style={{ color: "#F5F0E8" }}
               >
                 Enquiry Received
               </h3>
-              <p className="font-dm text-sm" style={{ color: "#8A7E6E" }}>
+              <p className="font-jost text-sm" style={{ color: "#8A7E6E" }}>
                 Thank you. We&apos;ll be in touch within 24 hours.
               </p>
             </div>
@@ -1092,7 +1090,7 @@ export default function PremiumElegance() {
               <div className="flex flex-col gap-1.5">
                 <label
                   htmlFor="name"
-                  className="font-dm text-[10px] tracking-[2px] uppercase"
+                  className="font-jost text-[10px] tracking-[2px] uppercase"
                   style={{ color: "#8A7E6E" }}
                 >
                   Full Name
@@ -1104,7 +1102,7 @@ export default function PremiumElegance() {
                   required
                   value={formData.name}
                   onChange={handleFormChange}
-                  className="w-full bg-transparent pb-2 font-dm text-sm focus:outline-none transition-colors duration-200"
+                  className="w-full bg-transparent pb-2 font-jost text-sm focus:outline-none transition-colors duration-200"
                   style={fieldBase}
                   onFocus={(e) =>
                     (e.currentTarget.style.borderBottomColor = "#D4AF37")
@@ -1120,7 +1118,7 @@ export default function PremiumElegance() {
                 <div className="flex flex-col gap-1.5">
                   <label
                     htmlFor="email"
-                    className="font-dm text-[10px] tracking-[2px] uppercase"
+                    className="font-jost text-[10px] tracking-[2px] uppercase"
                     style={{ color: "#8A7E6E" }}
                   >
                     Email Address
@@ -1132,7 +1130,7 @@ export default function PremiumElegance() {
                     required
                     value={formData.email}
                     onChange={handleFormChange}
-                    className="w-full bg-transparent pb-2 font-dm text-sm focus:outline-none transition-colors duration-200"
+                    className="w-full bg-transparent pb-2 font-jost text-sm focus:outline-none transition-colors duration-200"
                     style={fieldBase}
                     onFocus={(e) =>
                       (e.currentTarget.style.borderBottomColor = "#D4AF37")
@@ -1145,7 +1143,7 @@ export default function PremiumElegance() {
                 <div className="flex flex-col gap-1.5">
                   <label
                     htmlFor="phone"
-                    className="font-dm text-[10px] tracking-[2px] uppercase"
+                    className="font-jost text-[10px] tracking-[2px] uppercase"
                     style={{ color: "#8A7E6E" }}
                   >
                     Phone Number
@@ -1156,7 +1154,7 @@ export default function PremiumElegance() {
                     type="tel"
                     value={formData.phone}
                     onChange={handleFormChange}
-                    className="w-full bg-transparent pb-2 font-dm text-sm focus:outline-none transition-colors duration-200"
+                    className="w-full bg-transparent pb-2 font-jost text-sm focus:outline-none transition-colors duration-200"
                     style={fieldBase}
                     onFocus={(e) =>
                       (e.currentTarget.style.borderBottomColor = "#D4AF37")
@@ -1173,7 +1171,7 @@ export default function PremiumElegance() {
                 <div className="flex flex-col gap-1.5">
                   <label
                     htmlFor="eventDate"
-                    className="font-dm text-[10px] tracking-[2px] uppercase"
+                    className="font-jost text-[10px] tracking-[2px] uppercase"
                     style={{ color: "#8A7E6E" }}
                   >
                     Event Date
@@ -1184,7 +1182,7 @@ export default function PremiumElegance() {
                     type="date"
                     value={formData.eventDate}
                     onChange={handleFormChange}
-                    className="w-full bg-transparent pb-2 font-dm text-sm focus:outline-none transition-colors duration-200"
+                    className="w-full bg-transparent pb-2 font-jost text-sm focus:outline-none transition-colors duration-200"
                     style={{ ...fieldBase, colorScheme: "dark" }}
                     onFocus={(e) =>
                       (e.currentTarget.style.borderBottomColor = "#D4AF37")
@@ -1197,7 +1195,7 @@ export default function PremiumElegance() {
                 <div className="flex flex-col gap-1.5">
                   <label
                     htmlFor="guestCount"
-                    className="font-dm text-[10px] tracking-[2px] uppercase"
+                    className="font-jost text-[10px] tracking-[2px] uppercase"
                     style={{ color: "#8A7E6E" }}
                   >
                     Expected Guests
@@ -1209,7 +1207,7 @@ export default function PremiumElegance() {
                     min={1}
                     value={formData.guestCount}
                     onChange={handleFormChange}
-                    className="w-full bg-transparent pb-2 font-dm text-sm focus:outline-none transition-colors duration-200"
+                    className="w-full bg-transparent pb-2 font-jost text-sm focus:outline-none transition-colors duration-200"
                     style={fieldBase}
                     onFocus={(e) =>
                       (e.currentTarget.style.borderBottomColor = "#D4AF37")
@@ -1225,7 +1223,7 @@ export default function PremiumElegance() {
               <div className="flex flex-col gap-1.5">
                 <label
                   htmlFor="eventType"
-                  className="font-dm text-[10px] tracking-[2px] uppercase"
+                  className="font-jost text-[10px] tracking-[2px] uppercase"
                   style={{ color: "#8A7E6E" }}
                 >
                   Event Type
@@ -1235,7 +1233,7 @@ export default function PremiumElegance() {
                   name="eventType"
                   value={formData.eventType}
                   onChange={handleFormChange}
-                  className="w-full bg-transparent pb-2 font-dm text-sm focus:outline-none transition-colors duration-200 cursor-pointer"
+                  className="w-full bg-transparent pb-2 font-jost text-sm focus:outline-none transition-colors duration-200 cursor-pointer"
                   style={{ ...fieldBase, backgroundColor: "transparent" }}
                   onFocus={(e) =>
                     (e.currentTarget.style.borderBottomColor = "#D4AF37")
@@ -1263,7 +1261,7 @@ export default function PremiumElegance() {
               <div className="flex flex-col gap-1.5">
                 <label
                   htmlFor="preferredPackage"
-                  className="font-dm text-[10px] tracking-[2px] uppercase"
+                  className="font-jost text-[10px] tracking-[2px] uppercase"
                   style={{ color: "#8A7E6E" }}
                 >
                   Preferred Package
@@ -1273,7 +1271,7 @@ export default function PremiumElegance() {
                   name="preferredPackage"
                   value={formData.preferredPackage}
                   onChange={handleFormChange}
-                  className="w-full bg-transparent pb-2 font-dm text-sm focus:outline-none transition-colors duration-200 cursor-pointer"
+                  className="w-full bg-transparent pb-2 font-jost text-sm focus:outline-none transition-colors duration-200 cursor-pointer"
                   style={{ ...fieldBase, backgroundColor: "transparent" }}
                   onFocus={(e) =>
                     (e.currentTarget.style.borderBottomColor = "#D4AF37")
@@ -1301,7 +1299,7 @@ export default function PremiumElegance() {
               <div className="flex flex-col gap-1.5">
                 <label
                   htmlFor="notes"
-                  className="font-dm text-[10px] tracking-[2px] uppercase"
+                  className="font-jost text-[10px] tracking-[2px] uppercase"
                   style={{ color: "#8A7E6E" }}
                 >
                   Additional Notes
@@ -1312,7 +1310,7 @@ export default function PremiumElegance() {
                   rows={3}
                   value={formData.notes}
                   onChange={handleFormChange}
-                  className="w-full bg-transparent pb-2 font-dm text-sm focus:outline-none transition-colors duration-200 resize-none"
+                  className="w-full bg-transparent pb-2 font-jost text-sm focus:outline-none transition-colors duration-200 resize-none"
                   style={fieldBase}
                   onFocus={(e) =>
                     (e.currentTarget.style.borderBottomColor = "#D4AF37")
@@ -1327,7 +1325,7 @@ export default function PremiumElegance() {
               <div className="flex justify-center pt-2">
                 <button
                   type="submit"
-                  className="px-12 py-3.5 font-dm text-[11px] font-medium tracking-[3px] uppercase transition-opacity duration-200 hover:opacity-80"
+                  className="px-12 py-3.5 font-jost text-[11px] font-medium tracking-[3px] uppercase transition-opacity duration-200 hover:opacity-80"
                   style={{
                     backgroundColor: "#D4AF37",
                     color: "#110E0A",
@@ -1352,13 +1350,13 @@ export default function PremiumElegance() {
             {/* Brand column */}
             <div>
               <span
-                className="font-playfair font-semibold tracking-[3px] uppercase block mb-4"
+                className="font-cormorant font-semibold tracking-[3px] uppercase block mb-4"
                 style={{ fontSize: "1.1rem", color: "#D4AF37" }}
               >
                 Sober Club
               </span>
               <p
-                className="font-dm text-sm leading-[1.85]"
+                className="font-jost text-sm leading-[1.85]"
                 style={{ color: "#8A7E6E", maxWidth: "240px" }}
               >
                 It&apos;s never a party unless we&apos;re there. Premium mobile bar
@@ -1391,7 +1389,7 @@ export default function PremiumElegance() {
             {/* Navigation column */}
             <div>
               <p
-                className="font-dm text-[10px] tracking-[3px] uppercase mb-5"
+                className="font-jost text-[10px] tracking-[3px] uppercase mb-5"
                 style={{ color: "#D4AF37" }}
               >
                 Navigation
@@ -1401,7 +1399,7 @@ export default function PremiumElegance() {
                   <a
                     key={link.href}
                     href={link.href}
-                    className="font-dm text-sm transition-colors duration-200"
+                    className="font-jost text-sm transition-colors duration-200"
                     style={{ color: "#8A7E6E" }}
                     onMouseEnter={(e) =>
                       (e.currentTarget.style.color = "#F5F0E8")
@@ -1415,7 +1413,7 @@ export default function PremiumElegance() {
                 ))}
                 <a
                   href="#contact"
-                  className="font-dm text-sm transition-colors duration-200"
+                  className="font-jost text-sm transition-colors duration-200"
                   style={{ color: "#8A7E6E" }}
                   onMouseEnter={(e) =>
                     (e.currentTarget.style.color = "#F5F0E8")
@@ -1432,7 +1430,7 @@ export default function PremiumElegance() {
             {/* Contact column */}
             <div>
               <p
-                className="font-dm text-[10px] tracking-[3px] uppercase mb-5"
+                className="font-jost text-[10px] tracking-[3px] uppercase mb-5"
                 style={{ color: "#D4AF37" }}
               >
                 Contact
@@ -1440,7 +1438,7 @@ export default function PremiumElegance() {
               <div className="flex flex-col gap-4">
                 <a
                   href="tel:+639000000000"
-                  className="flex items-center gap-3 font-dm text-sm transition-colors duration-200"
+                  className="flex items-center gap-3 font-jost text-sm transition-colors duration-200"
                   style={{ color: "#8A7E6E" }}
                   onMouseEnter={(e) =>
                     (e.currentTarget.style.color = "#F5F0E8")
@@ -1454,7 +1452,7 @@ export default function PremiumElegance() {
                 </a>
                 <a
                   href="mailto:hello@soberclub.ph"
-                  className="flex items-center gap-3 font-dm text-sm transition-colors duration-200"
+                  className="flex items-center gap-3 font-jost text-sm transition-colors duration-200"
                   style={{ color: "#8A7E6E" }}
                   onMouseEnter={(e) =>
                     (e.currentTarget.style.color = "#F5F0E8")
@@ -1467,7 +1465,7 @@ export default function PremiumElegance() {
                   hello@soberclub.ph
                 </a>
                 <div
-                  className="flex items-start gap-3 font-dm text-sm"
+                  className="flex items-start gap-3 font-jost text-sm"
                   style={{ color: "#8A7E6E" }}
                 >
                   <MapPin size={14} style={{ flexShrink: 0, marginTop: "2px" }} />
@@ -1486,7 +1484,7 @@ export default function PremiumElegance() {
         {/* Bottom row: centered copyright */}
         <div className="max-w-6xl mx-auto px-6 py-6 text-center">
           <p
-            className="font-dm text-[11px] tracking-[1px]"
+            className="font-jost text-[11px] tracking-[1px]"
             style={{ color: "#8A7E6E" }}
           >
             &copy; {new Date().getFullYear()} Sober Club. All rights reserved.

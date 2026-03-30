@@ -92,7 +92,7 @@ function Header() {
           className="flex items-center gap-2 select-none"
         >
           <span className="inline-block w-1 h-6 bg-[#39FF14] rounded-full flex-shrink-0" />
-          <span className="font-bebas text-[17px] tracking-[0.22em] text-white uppercase">
+          <span className="font-space text-[17px] tracking-[0.22em] text-white uppercase">
             Sober Club
           </span>
         </a>
@@ -110,7 +110,7 @@ function Header() {
             <a
               key={href}
               href={href}
-              className="font-outfit text-[13px] font-medium text-white/60 hover:text-white transition-colors duration-200 tracking-wide"
+              className="font-dm text-[13px] font-medium text-white/60 hover:text-white transition-colors duration-200 tracking-wide"
             >
               {label}
             </a>
@@ -120,7 +120,7 @@ function Header() {
         {/* Book Now pill */}
         <a
           href="#contact"
-          className="inline-flex items-center gap-2 h-10 px-6 rounded-full bg-[#39FF14] text-[#0A0A0A] font-outfit font-semibold text-[13px] hover:brightness-110 transition-all duration-200 flex-shrink-0"
+          className="inline-flex items-center gap-2 h-10 px-6 rounded-full bg-[#39FF14] text-[#0A0A0A] font-dm font-semibold text-[13px] hover:brightness-110 transition-all duration-200 flex-shrink-0"
         >
           Book Now
           <ChevronRight size={14} strokeWidth={2.5} />
@@ -161,20 +161,20 @@ function Hero() {
           {/* Pill badge */}
           <div className="mb-7 inline-flex items-center gap-2.5 rounded-full border border-[#39FF14]/35 bg-[#39FF14]/8 px-4 py-1.5 backdrop-blur-sm">
             <span className="inline-block w-1.5 h-1.5 rounded-full bg-[#39FF14] animate-pulse" />
-            <span className="font-outfit text-[11px] font-semibold tracking-[0.2em] text-[#39FF14] uppercase">
+            <span className="font-dm text-[11px] font-semibold tracking-[0.2em] text-[#39FF14] uppercase">
               Quezon City&apos;s Premier Mobile Bar
             </span>
           </div>
 
           {/* Main headline */}
-          <h1 className="font-bebas text-[clamp(2.6rem,7vw,5.5rem)] leading-[1.02] text-white mb-5">
+          <h1 className="font-space text-[clamp(2.6rem,7vw,5.5rem)] leading-[1.02] text-white mb-5">
             It&apos;s Never a Party
             <br />
             <span className="text-[#39FF14]">Unless We&apos;re There.</span>
           </h1>
 
           {/* Subheadline */}
-          <p className="font-outfit text-[15px] sm:text-base text-white/65 max-w-md mb-9 leading-[1.7]">
+          <p className="font-dm text-[15px] sm:text-base text-white/65 max-w-md mb-9 leading-[1.7]">
             Crafted cocktails, skilled mixologists, and bar setups that steal
             the spotlight — brought directly to your venue across Metro Manila.
           </p>
@@ -183,14 +183,14 @@ function Hero() {
           <div className="flex flex-wrap gap-3">
             <a
               href="#contact"
-              className="inline-flex items-center gap-2 h-[52px] px-9 rounded-full bg-[#39FF14] text-[#0A0A0A] font-outfit font-semibold text-[14px] hover:brightness-110 transition-all duration-200 shadow-[0_0_32px_rgba(57,255,20,0.30)]"
+              className="inline-flex items-center gap-2 h-[52px] px-9 rounded-full bg-[#39FF14] text-[#0A0A0A] font-dm font-semibold text-[14px] hover:brightness-110 transition-all duration-200 shadow-[0_0_32px_rgba(57,255,20,0.30)]"
             >
               Book Your Bar
               <ArrowRight size={15} strokeWidth={2.4} />
             </a>
             <a
               href="#packages"
-              className="inline-flex items-center gap-2 h-[52px] px-9 rounded-full bg-white/6 border border-white/14 text-white font-outfit font-semibold text-[14px] hover:bg-white/10 hover:border-white/25 transition-all duration-200 backdrop-blur-sm"
+              className="inline-flex items-center gap-2 h-[52px] px-9 rounded-full bg-white/6 border border-white/14 text-white font-dm font-semibold text-[14px] hover:bg-white/10 hover:border-white/25 transition-all duration-200 backdrop-blur-sm"
             >
               See Packages
             </a>
@@ -205,11 +205,11 @@ function Hero() {
             {stats.map((stat, i) => (
               <div key={i} className="flex flex-col items-center sm:items-start gap-0.5">
                 <span
-                  className={`font-bebas text-[1.6rem] sm:text-[2.2rem] leading-none ${stat.accent}`}
+                  className={`font-space text-[1.6rem] sm:text-[2.2rem] leading-none ${stat.accent}`}
                 >
                   {stat.value}
                 </span>
-                <span className="font-outfit text-[10px] sm:text-[11px] text-white/45 uppercase tracking-[0.14em] leading-snug text-center sm:text-left">
+                <span className="font-dm text-[10px] sm:text-[11px] text-white/45 uppercase tracking-[0.14em] leading-snug text-center sm:text-left">
                   {stat.label}
                 </span>
               </div>
@@ -259,25 +259,25 @@ function About() {
           {/* Section label */}
           <div className="flex items-center gap-3 mb-5">
             <span className="inline-block w-6 h-[2px] bg-[#39FF14]" />
-            <span className="font-outfit text-[11px] font-semibold tracking-[0.2em] uppercase text-[#39FF14]">
+            <span className="font-dm text-[11px] font-semibold tracking-[0.2em] uppercase text-[#39FF14]">
               About Us
             </span>
           </div>
 
-          <h2 className="font-bebas text-[clamp(1.9rem,4vw,2.9rem)] text-white leading-[1.1] mb-6">
+          <h2 className="font-space text-[clamp(1.9rem,4vw,2.9rem)] text-white leading-[1.1] mb-6">
             We Don&apos;t Just Mix Drinks.
             <br />
             <span className="text-white/45">We Make Memories.</span>
           </h2>
 
-          <p className="font-outfit text-[14px] sm:text-[15px] text-white/60 leading-[1.75] mb-5">
+          <p className="font-dm text-[14px] sm:text-[15px] text-white/60 leading-[1.75] mb-5">
             Sober Club delivers a full mobile bar experience — from curated
             cocktail menus and professional mixologists to stunning bar setups
             that become the centrepiece of any event. Based in Quezon City, we
             serve Metro Manila and beyond.
           </p>
 
-          <p className="font-outfit text-[14px] sm:text-[15px] text-white/50 leading-[1.75] mb-10">
+          <p className="font-dm text-[14px] sm:text-[15px] text-white/50 leading-[1.75] mb-10">
             Every event is unique, and we treat it that way. Our team works
             closely with you to craft a drink experience that matches your
             theme, your crowd, and your vibe.
@@ -285,7 +285,7 @@ function About() {
 
           <a
             href="#contact"
-            className="self-start inline-flex items-center gap-2 h-11 px-7 rounded-full border border-[#39FF14]/40 text-[#39FF14] font-outfit font-semibold text-[13px] hover:bg-[#39FF14]/10 hover:border-[#39FF14]/70 transition-all duration-200"
+            className="self-start inline-flex items-center gap-2 h-11 px-7 rounded-full border border-[#39FF14]/40 text-[#39FF14] font-dm font-semibold text-[13px] hover:bg-[#39FF14]/10 hover:border-[#39FF14]/70 transition-all duration-200"
           >
             Get a Free Quote
             <ArrowRight size={14} strokeWidth={2.4} />
@@ -299,7 +299,7 @@ function About() {
           {marqueeItems.map((item, i) => (
             <span key={i} className="inline-flex items-center">
               <span
-                className={`font-bebas text-[13px] tracking-[0.18em] uppercase px-7 ${
+                className={`font-space text-[13px] tracking-[0.18em] uppercase px-7 ${
                   i % 3 === 0
                     ? "text-[#39FF14]"
                     : i % 3 === 1
@@ -412,7 +412,7 @@ function PackageCard({ pkg }: { pkg: PackageData }) {
       <span
         aria-hidden="true"
         className={`
-          absolute -top-4 -right-2 font-bebas text-[7rem] leading-none select-none pointer-events-none
+          absolute -top-4 -right-2 font-space text-[7rem] leading-none select-none pointer-events-none
           ${isInverted ? "text-[#0A0A0A]/10" : "text-white/[0.04]"}
         `}
       >
@@ -421,14 +421,14 @@ function PackageCard({ pkg }: { pkg: PackageData }) {
 
       {/* Badge */}
       {pkg.badge && (
-        <span className="absolute -top-px left-5 inline-flex items-center justify-center px-3.5 py-1 rounded-b-lg bg-[#0A0A0A] border border-t-0 border-[#39FF14]/30 font-outfit text-[9px] font-semibold tracking-[0.2em] text-[#39FF14] uppercase">
+        <span className="absolute -top-px left-5 inline-flex items-center justify-center px-3.5 py-1 rounded-b-lg bg-[#0A0A0A] border border-t-0 border-[#39FF14]/30 font-dm text-[9px] font-semibold tracking-[0.2em] text-[#39FF14] uppercase">
           {pkg.badge}
         </span>
       )}
 
       {/* Number indicator */}
       <span
-        className={`font-outfit text-[11px] font-semibold tracking-[0.18em] uppercase mb-4 mt-3 ${
+        className={`font-dm text-[11px] font-semibold tracking-[0.18em] uppercase mb-4 mt-3 ${
           isInverted ? "text-[#0A0A0A]/50" : "text-white/20"
         }`}
       >
@@ -437,7 +437,7 @@ function PackageCard({ pkg }: { pkg: PackageData }) {
 
       {/* Price */}
       <div
-        className={`font-bebas text-[2rem] leading-none mb-1 ${
+        className={`font-space text-[2rem] leading-none mb-1 ${
           isInverted ? "text-[#0A0A0A]" : pkg.priceAccent
         }`}
       >
@@ -446,7 +446,7 @@ function PackageCard({ pkg }: { pkg: PackageData }) {
 
       {/* Name */}
       <h3
-        className={`font-outfit font-semibold text-[15px] leading-snug mb-3 ${
+        className={`font-dm font-semibold text-[15px] leading-snug mb-3 ${
           isInverted ? "text-[#0A0A0A]" : "text-white"
         }`}
       >
@@ -455,7 +455,7 @@ function PackageCard({ pkg }: { pkg: PackageData }) {
 
       {/* Description */}
       <p
-        className={`font-outfit text-[12px] leading-[1.65] mb-5 ${
+        className={`font-dm text-[12px] leading-[1.65] mb-5 ${
           isInverted ? "text-[#0A0A0A]/65" : "text-white/45"
         }`}
       >
@@ -479,7 +479,7 @@ function PackageCard({ pkg }: { pkg: PackageData }) {
               }`}
             />
             <span
-              className={`font-outfit text-[12px] ${
+              className={`font-dm text-[12px] ${
                 isInverted ? "text-[#0A0A0A]/75" : "text-white/55"
               }`}
             >
@@ -494,7 +494,7 @@ function PackageCard({ pkg }: { pkg: PackageData }) {
         href="#contact"
         className={`
           mt-7 inline-flex items-center justify-center h-11 rounded-full
-          font-outfit font-semibold text-[13px] transition-all duration-200
+          font-dm font-semibold text-[13px] transition-all duration-200
           ${
             isInverted
               ? "bg-[#0A0A0A] text-[#39FF14] hover:bg-[#0A0A0A]/85"
@@ -515,15 +515,15 @@ function Packages() {
       <div className="px-6 sm:px-10 lg:px-16 mb-12">
         <div className="flex items-center gap-3 mb-4">
           <span className="inline-block w-6 h-[2px] bg-[#FF6B00]" />
-          <span className="font-outfit text-[11px] font-semibold tracking-[0.2em] uppercase text-[#FF6B00]">
+          <span className="font-dm text-[11px] font-semibold tracking-[0.2em] uppercase text-[#FF6B00]">
             Bar Packages
           </span>
         </div>
         <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
-          <h2 className="font-bebas text-[clamp(1.9rem,4vw,2.9rem)] text-white leading-[1.1]">
+          <h2 className="font-space text-[clamp(1.9rem,4vw,2.9rem)] text-white leading-[1.1]">
             Choose Your Perfect Bar.
           </h2>
-          <p className="font-outfit text-[13px] text-white/40 max-w-xs leading-relaxed sm:text-right">
+          <p className="font-dm text-[13px] text-white/40 max-w-xs leading-relaxed sm:text-right">
             All packages include delivery, setup, and teardown within Metro Manila.
           </p>
         </div>
@@ -588,11 +588,11 @@ function Gallery() {
       <div className="px-6 sm:px-10 lg:px-16 mb-12">
         <div className="flex items-center gap-3 mb-4">
           <span className="inline-block w-6 h-[2px] bg-[#39FF14]" />
-          <span className="font-outfit text-[11px] font-semibold tracking-[0.2em] uppercase text-[#39FF14]">
+          <span className="font-dm text-[11px] font-semibold tracking-[0.2em] uppercase text-[#39FF14]">
             Our Work
           </span>
         </div>
-        <h2 className="font-bebas text-[clamp(1.9rem,4vw,2.9rem)] text-white leading-[1.1]">
+        <h2 className="font-space text-[clamp(1.9rem,4vw,2.9rem)] text-white leading-[1.1]">
           Scenes From Our Events.
         </h2>
       </div>
@@ -643,7 +643,7 @@ function Gallery() {
             {/* Neon corner tag */}
             <div className="absolute bottom-4 left-4 inline-flex items-center gap-2 rounded-full bg-black/50 backdrop-blur-sm border border-[#39FF14]/30 px-3 py-1.5">
               <span className="w-1.5 h-1.5 rounded-full bg-[#39FF14] flex-shrink-0" />
-              <span className="font-outfit text-[10px] font-semibold text-[#39FF14] tracking-wider uppercase">
+              <span className="font-dm text-[10px] font-semibold text-[#39FF14] tracking-wider uppercase">
                 Featured
               </span>
             </div>
@@ -679,17 +679,17 @@ function Testimonials() {
         <div className="w-12 h-[3px] bg-[#39FF14] rounded-full mx-auto mb-10" />
 
         <blockquote>
-          <p className="font-outfit text-2xl sm:text-3xl text-white/80 leading-[1.55] italic mb-10 text-balance">
+          <p className="font-dm text-2xl sm:text-3xl text-white/80 leading-[1.55] italic mb-10 text-balance">
             &ldquo;Sober Club absolutely made our wedding. From the custom cocktail
             menu to the gorgeous bar setup, every detail was perfect. Our guests
             are still talking about the drinks months later. If you want a bar
             service that actually elevates your event, these are your people.&rdquo;
           </p>
           <footer className="flex flex-col items-center gap-1">
-            <cite className="font-outfit text-[14px] font-semibold text-[#39FF14] not-italic tracking-wide">
+            <cite className="font-dm text-[14px] font-semibold text-[#39FF14] not-italic tracking-wide">
               Maria S.
             </cite>
-            <span className="font-outfit text-[12px] text-white/30 tracking-widest uppercase not-italic">
+            <span className="font-dm text-[12px] text-white/30 tracking-widest uppercase not-italic">
               Wedding Reception &mdash; Quezon City
             </span>
           </footer>
@@ -703,9 +703,9 @@ function Testimonials() {
 
 function InquiryForm() {
   const inputClass =
-    "w-full bg-[#0A0A0A] border border-white/8 rounded-xl px-4 py-3 font-outfit text-[13px] text-white placeholder-white/20 focus:outline-none focus:border-[#39FF14]/45 focus:ring-1 focus:ring-[#39FF14]/20 transition-colors duration-200";
+    "w-full bg-[#0A0A0A] border border-white/8 rounded-xl px-4 py-3 font-dm text-[13px] text-white placeholder-white/20 focus:outline-none focus:border-[#39FF14]/45 focus:ring-1 focus:ring-[#39FF14]/20 transition-colors duration-200";
   const labelClass =
-    "font-outfit text-[11px] font-semibold text-[#39FF14] uppercase tracking-[0.14em] mb-1.5 block";
+    "font-dm text-[11px] font-semibold text-[#39FF14] uppercase tracking-[0.14em] mb-1.5 block";
   const selectClass = `${inputClass} appearance-none cursor-pointer`;
 
   return (
@@ -718,18 +718,18 @@ function InquiryForm() {
             <div>
               <div className="flex items-center gap-3 mb-6">
                 <span className="inline-block w-6 h-[2px] bg-[#39FF14]" />
-                <span className="font-outfit text-[11px] font-semibold tracking-[0.2em] uppercase text-[#39FF14]">
+                <span className="font-dm text-[11px] font-semibold tracking-[0.2em] uppercase text-[#39FF14]">
                   Book Your Bar
                 </span>
               </div>
 
-              <h2 className="font-bebas text-[clamp(1.8rem,3.5vw,2.7rem)] text-white leading-[1.1] mb-5">
+              <h2 className="font-space text-[clamp(1.8rem,3.5vw,2.7rem)] text-white leading-[1.1] mb-5">
                 Let&apos;s Make Your
                 <br />
                 <span className="text-[#39FF14]">Event Legendary.</span>
               </h2>
 
-              <p className="font-outfit text-[14px] text-white/50 leading-[1.75] mb-10">
+              <p className="font-dm text-[14px] text-white/50 leading-[1.75] mb-10">
                 Fill out the form and our team will get back to you within 24
                 hours with availability and a custom quote tailored to your event.
               </p>
@@ -745,7 +745,7 @@ function InquiryForm() {
                   <span className="flex-shrink-0 w-9 h-9 rounded-full bg-[#39FF14]/8 border border-[#39FF14]/20 flex items-center justify-center text-[#39FF14] group-hover:bg-[#39FF14]/15 transition-colors duration-200">
                     <Phone size={14} strokeWidth={1.8} />
                   </span>
-                  <span className="font-outfit text-[13px] text-white/55 group-hover:text-[#39FF14] transition-colors duration-200">
+                  <span className="font-dm text-[13px] text-white/55 group-hover:text-[#39FF14] transition-colors duration-200">
                     +63 917 123 4567
                   </span>
                 </a>
@@ -758,7 +758,7 @@ function InquiryForm() {
                   <span className="flex-shrink-0 w-9 h-9 rounded-full bg-[#39FF14]/8 border border-[#39FF14]/20 flex items-center justify-center text-[#39FF14] group-hover:bg-[#39FF14]/15 transition-colors duration-200">
                     <Mail size={14} strokeWidth={1.8} />
                   </span>
-                  <span className="font-outfit text-[13px] text-white/55 group-hover:text-[#39FF14] transition-colors duration-200">
+                  <span className="font-dm text-[13px] text-white/55 group-hover:text-[#39FF14] transition-colors duration-200">
                     hello@soberclub.ph
                   </span>
                 </a>
@@ -767,7 +767,7 @@ function InquiryForm() {
                 <span className="flex-shrink-0 w-9 h-9 rounded-full bg-[#39FF14]/8 border border-[#39FF14]/20 flex items-center justify-center text-[#39FF14]">
                   <MapPin size={14} strokeWidth={1.8} />
                 </span>
-                <span className="font-outfit text-[13px] text-white/50 leading-relaxed pt-1.5">
+                <span className="font-dm text-[13px] text-white/50 leading-relaxed pt-1.5">
                   Quezon City, Metro Manila
                   <br />Philippines
                 </span>
@@ -923,7 +923,7 @@ function InquiryForm() {
               <div className="pt-1">
                 <button
                   type="submit"
-                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 h-[52px] px-10 rounded-full bg-[#39FF14] text-[#0A0A0A] font-outfit font-semibold text-[14px] hover:brightness-110 active:scale-[0.97] transition-all duration-200 shadow-[0_0_28px_rgba(57,255,20,0.25)]"
+                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 h-[52px] px-10 rounded-full bg-[#39FF14] text-[#0A0A0A] font-dm font-semibold text-[14px] hover:brightness-110 active:scale-[0.97] transition-all duration-200 shadow-[0_0_28px_rgba(57,255,20,0.25)]"
                 >
                   Send Inquiry
                   <ArrowRight size={15} strokeWidth={2.4} />
@@ -947,7 +947,7 @@ function Footer() {
         <a
           href="#"
           aria-label="Sober Club home"
-          className="font-bebas text-[13px] tracking-[0.22em] text-white/40 hover:text-[#39FF14] transition-colors duration-200 uppercase whitespace-nowrap flex-shrink-0"
+          className="font-space text-[13px] tracking-[0.22em] text-white/40 hover:text-[#39FF14] transition-colors duration-200 uppercase whitespace-nowrap flex-shrink-0"
         >
           Sober Club
         </a>
@@ -976,7 +976,7 @@ function Footer() {
         </div>
 
         {/* Copyright — right */}
-        <p className="font-outfit text-[11px] text-white/25 whitespace-nowrap flex-shrink-0">
+        <p className="font-dm text-[11px] text-white/25 whitespace-nowrap flex-shrink-0">
           &copy; {new Date().getFullYear()} Sober Club
         </p>
       </div>
@@ -988,7 +988,7 @@ function Footer() {
 
 export default function NeonNightlife() {
   return (
-    <div className="min-h-screen bg-[#0A0A0A] font-outfit">
+    <div className="min-h-screen bg-[#0A0A0A] font-dm">
       <GlobalStyles />
       <Header />
       <main>
