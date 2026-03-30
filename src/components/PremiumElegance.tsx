@@ -260,7 +260,7 @@ export default function PremiumElegance() {
       {/* HEADER — two-row editorial layout                                   */}
       {/* ------------------------------------------------------------------ */}
       <header
-        className="fixed top-0 left-0 right-0 z-50"
+        className="absolute top-0 left-0 right-0 z-40"
         style={{
           backgroundColor: "rgba(17, 14, 10, 0.96)",
           backdropFilter: "blur(14px)",

@@ -133,7 +133,7 @@ export default function VibrantParty() {
       {/* ================================================================== */}
       {/* HEADER                                                              */}
       {/* ================================================================== */}
-      <header className="fixed top-0 left-0 right-0 z-50 bg-[#0F0F1A]/85 backdrop-blur-md border-b border-white/5">
+      <header className="absolute top-0 left-0 right-0 z-40 bg-[#0F0F1A]/85 backdrop-blur-md border-b border-white/5">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
           {/* Logo */}
           <a
